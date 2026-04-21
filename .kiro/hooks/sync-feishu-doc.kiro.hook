@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "同步飞书文档",
+  "description": "当笔记详情页Markdown排版规范-v2.md 文件被编辑保存时，自动读取最新内容并同步更新飞书文档（doc_id: DmXVd2OfeoethaxBrqacZSB9nDZ）",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "笔记详情页Markdown排版规范-v2.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "笔记详情页Markdown排版规范-v2.md 文件刚刚被修改保存了。请读取该文件的最新完整内容，然后用 overwrite 模式更新飞书文档（doc_id: DmXVd2OfeoethaxBrqacZSB9nDZ）。注意：文档内容较长，先用 overwrite 写入前半部分，再用 append 追加剩余部分。保持之前的飞书排版风格（callout 高亮块等）。"
+  }
+}

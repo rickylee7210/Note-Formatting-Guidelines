@@ -1,0 +1,367 @@
+/* ===== Markdown 渲染样式（严格对照规范 v2.1）===== */
+
+.markdown-body {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  overflow-wrap: break-word;
+  transition: var(--transition-theme);
+}
+
+/* ===== 标题 ===== */
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  color: var(--color-heading);
+  margin-top: var(--spacing-xl);
+  transition: var(--transition-theme);
+}
+
+.markdown-body h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-h1);
+  line-height: var(--line-height-h1);
+  margin-bottom: var(--spacing-md);
+}
+
+.markdown-body h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-h2);
+  line-height: var(--line-height-h2);
+  margin-bottom: var(--spacing-sm);
+}
+
+.markdown-body h3 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-h3);
+  line-height: var(--line-height-h3);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* H4-H6 独立样式（不再降级为 H3） */
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-h4);
+  line-height: var(--line-height-h4);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* ===== 段落 ===== */
+.markdown-body p {
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+}
+
+/* ===== 强调样式 ===== */
+.markdown-body strong {
+  font-weight: var(--font-weight-emphasis);
+}
+
+.markdown-body em {
+  font-style: italic;
+}
+
+.markdown-body del {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.markdown-body u {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.markdown-body mark {
+  background-color: var(--color-highlight-bg);
+  color: var(--color-text-primary);
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+/* ===== 链接（主题色 + 必须带下划线）===== */
+.markdown-body a {
+  color: var(--color-text-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: var(--transition-theme);
+}
+
+.markdown-body a:active {
+  opacity: 0.7;
+}
+
+/* ===== 行内代码 ===== */
+.markdown-body code {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-code);
+  font-weight: var(--font-weight-secondary);
+  line-height: var(--line-height-code);
+  color: var(--color-text-code);
+  background-color: var(--color-bg-code);
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: var(--transition-theme);
+}
+
+/* ===== 代码块 ===== */
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+  background-color: var(--color-bg-code);
+  border-radius: 8px;
+  padding: var(--spacing-lg) 0;
+  overflow-x: auto;
+  transition: var(--transition-theme);
+}
+
+.markdown-body pre code {
+  background: none;
+  padding: 0 var(--spacing-lg);
+  border-radius: 0;
+  font-size: var(--font-size-code);
+  line-height: var(--line-height-code);
+  color: var(--color-text-primary);
+  display: block;
+  width: fit-content;
+  min-width: 100%;
+}
+
+/* ===== 引用块 ===== */
+.markdown-body blockquote {
+  margin: 0 0 var(--spacing-md) 2px;
+  padding: 0;
+  padding-left: var(--spacing-lg);
+  border-left: none;
+  background: none;
+  color: var(--color-text-quote);
+  position: relative;
+  transition: var(--transition-theme);
+}
+
+/* 引用竖线：高度只覆盖文字区域，不含行高 */
+.markdown-body blockquote::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc((var(--line-height-body) - var(--font-size-body)) / 2);
+  bottom: calc((var(--line-height-body) - var(--font-size-body)) / 2);
+  width: 2px;
+  background: var(--color-border-quote);
+  transition: var(--transition-theme);
+}
+
+/* 不允许嵌套引用，嵌套的引用块去掉边框和缩进，视觉上打平 */
+.markdown-body blockquote blockquote {
+  margin: 0;
+  padding: 0;
+  border-left: none;
+}
+
+.markdown-body blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== 列表 ===== */
+.markdown-body ul,
+.markdown-body ol {
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+}
+
+.markdown-body ol {
+  list-style: none;
+  counter-reset: ol-counter;
+  padding-left: 0;
+}
+
+/* 有序列表 — 悬挂缩进 */
+.markdown-body ol > li {
+  counter-increment: ol-counter;
+  padding-left: calc(1em + var(--spacing-lg));
+  position: relative;
+}
+
+.markdown-body ol > li::before {
+  content: counter(ol-counter) ".";
+  position: absolute;
+  left: 0;
+}
+
+.markdown-body ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+/* 无序列表 — 悬挂缩进，圆点贴左边缘，文字与有序列表对齐 */
+.markdown-body ul > li:not(.task-list-item) {
+  padding-left: calc(1em + var(--spacing-lg));
+  position: relative;
+}
+
+.markdown-body ul > li:not(.task-list-item)::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: calc((var(--line-height-body) - 6px) / 2);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.markdown-body li {
+  margin-bottom: var(--spacing-sm);
+  line-height: var(--line-height-body);
+}
+
+/* 扁平化：嵌套列表不额外缩进 */
+.markdown-body li > ul,
+.markdown-body li > ol {
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== 任务列表 ===== */
+.markdown-body ul.contains-task-list {
+  padding-left: 0;
+}
+
+.markdown-body .task-list-item {
+  list-style: none;
+  margin-left: 0;
+  padding-left: calc(18px + var(--spacing-lg));
+  position: relative;
+}
+
+.markdown-body .task-list-item-checkbox {
+  width: 18px;
+  height: 18px;
+  margin-right: 0;
+  border-radius: 4px;
+  accent-color: var(--color-task-checked);
+  position: absolute;
+  left: 0;
+  top: calc((var(--line-height-body) - 18px) / 2);
+  -webkit-appearance: none;
+  appearance: none;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  background: transparent;
+  cursor: pointer;
+  transition: var(--transition-theme);
+}
+
+.markdown-body .task-list-item-checkbox:checked {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px 12px;
+}
+
+/* 已完成的任务文字变淡 */
+.markdown-body .task-list-item-checkbox:checked + span,
+.markdown-body .task-list-item-checkbox:checked ~ * {
+  color: var(--color-task-checked-text);
+}
+
+/* 通过 JS 标记已完成项 */
+.markdown-body .task-list-item.task-checked > label,
+.markdown-body .task-list-item.task-checked {
+  color: var(--color-task-checked-text);
+}
+
+/* ===== 表格 ===== */
+.markdown-body .table-wrapper {
+  overflow-x: auto;
+  margin-bottom: var(--spacing-md);
+}
+
+.markdown-body .table-wrapper table {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--spacing-md);
+  transition: var(--transition-theme);
+}
+
+.markdown-body th {
+  font-weight: var(--font-weight-body);
+  background-color: transparent;
+  text-align: left;
+}
+
+.markdown-body th,
+.markdown-body td {
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border-table);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  white-space: nowrap;
+  transition: var(--transition-theme);
+}
+
+/* ===== 分割线 ===== */
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid var(--color-border-divider);
+  margin: var(--spacing-xl) 0;
+  transition: var(--transition-theme);
+}
+
+/* ===== 图片 ===== */
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: var(--spacing-md) 0;
+}
+
+.markdown-body figcaption {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* 图片加载失败态 */
+.markdown-body img.img-error {
+  min-height: 120px;
+  background-color: var(--color-bg-code);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpolyline points='21 15 16 10 5 21'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center 30%;
+  background-size: 40px 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: var(--spacing-md);
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-secondary);
+  text-align: center;
+  border: 1px dashed var(--color-border-divider);
+}
+
+/* ===== 暗黑模式 ===== */
+[data-theme="dark"] .markdown-body .task-list-item-checkbox {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .markdown-body .task-list-item-checkbox:checked {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: transparent;
+}

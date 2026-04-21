@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>笔记详情页 Markdown 排版规范 Demo</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/markdown.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/highlight-light.css" id="highlight-theme">
+<script src="js/markdown-it.min.js" defer></script>
+<script src="js/markdown-it-task-lists.min.js" defer></script>
+<script src="js/markdown-it-mark.min.js" defer></script>
+<script src="js/highlight.min.js" defer></script>
+<script src="js/app.js" defer></script>
+</head>
+<body>
+<header class="toolbar">
+  <div class="toolbar-left">
+    <h1 class="toolbar-title">Markdown 排版规范 Demo</h1>
+    <span class="toolbar-version">v2.1 · HyperOS Design System</span>
+  </div>
+  <div class="toolbar-right">
+    <div class="sample-switcher">
+      <button class="sample-btn active" data-sample="mixed">混合内容</button>
+      <button class="sample-btn" data-sample="user">用户手写</button>
+      <button class="sample-btn" data-sample="ai">AI 生成</button>
+      <button class="sample-btn" data-sample="import">导入内容</button>
+    </div>
+    <button class="theme-toggle" id="themeToggle" title="切换 Light/Dark 模式">
+      <span class="theme-icon">☀️</span>
+    </button>
+  </div>
+</header>
+
+<main class="editor-container">
+  <section class="editor-pane">
+    <div class="pane-header">Markdown 输入</div>
+    <textarea id="markdownInput" spellcheck="false" placeholder="在此输入或粘贴 Markdown 内容..."></textarea>
+  </section>
+  <section class="preview-pane">
+    <div class="pane-header">渲染预览</div>
+    <div class="preview-scroll">
+      <div class="page-title" id="pageTitle">笔记标题 (PageTitle)</div>
+      <article class="markdown-body" id="preview"></article>
+    </div>
+  </section>
+</main>
+</body>
+</html>

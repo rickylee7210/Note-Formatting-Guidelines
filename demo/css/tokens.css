@@ -1,0 +1,102 @@
+/* ===== CSS Token 速查表（唯一数值来源）===== */
+
+/* ===== 字体加载 ===== */
+@font-face {
+  font-family: "MiSans";
+  src: url("../fonts/MiSansVF.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MiSans Latin";
+  src: url("../fonts/MiSansLatinVF.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  /* Typography — 英文优先 MiSans Latin，中文回退 MiSans */
+  --font-family-sans: "MiSans Latin", "MiSans", -apple-system, "Helvetica Neue", sans-serif;
+  --font-family-mono: "SF Mono", "Menlo", "Consolas", monospace;
+
+  --font-size-page-title: 26px;
+  --font-size-h1: 22px;
+  --font-size-h2: 20px;
+  --font-size-h3: 18px;
+  --font-size-h4: 16px;
+  --font-size-body: 16px;
+  --font-size-secondary: 13px;
+  --font-size-code: 15px;
+
+  --font-weight-page-title: 520;
+  --font-weight-h1: 450;
+  --font-weight-h2: 450;
+  --font-weight-h3: 450;
+  --font-weight-h4: 450;
+  --font-weight-body: 330;
+  --font-weight-emphasis: 450;   /* Demibold */
+  --font-weight-secondary: 330;
+
+  --line-height-page-title: 33.8px;
+  --line-height-h1: 29.7px;
+  --line-height-h2: 28px;
+  --line-height-h3: 26.1px;
+  --line-height-h4: 24px;
+  --line-height-body: 25.6px;
+  --line-height-secondary: 15.6px;
+  --line-height-code: 16.8px;
+
+  /* Spacing (8dp grid) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+
+  /* Colors — Light */
+  --color-heading: #000000;
+  --color-text-primary: rgba(0, 0, 0, 0.9);
+  --color-text-secondary: rgba(0, 0, 0, 0.4);
+  --color-text-code: rgba(0, 0, 0, 0.6);
+  --color-text-link: #FFBB0F;
+  --color-text-link-active: rgba(255, 187, 15, 0.7);
+  --color-bg-code: rgba(0, 0, 0, 0.04);
+  --color-border-divider: rgba(0, 0, 0, 0.1);
+  --color-text-quote: rgba(0, 0, 0, 0.6);
+  --color-border-quote: rgba(0, 0, 0, 0.4);
+  --color-border-table: rgba(0, 0, 0, 0.1);
+  --color-bg-table-header: rgba(0, 0, 0, 0.04);
+  --color-task-checked: #0066CC;
+  --color-task-unchecked: rgba(0, 0, 0, 0.2);
+  --color-task-checked-text: rgba(0, 0, 0, 0.3);
+  --color-highlight-bg: rgba(255, 213, 0, 0.3);
+  --color-bg: #FFFFFF;
+  --color-bg-surface: #F5F5F5;
+
+  /* Transition */
+  --transition-theme: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Colors — Dark */
+[data-theme="dark"] {
+  --color-heading: #FFFFFF;
+  --color-text-primary: rgba(255, 255, 255, 0.95);
+  --color-text-secondary: rgba(255, 255, 255, 0.4);
+  --color-text-code: rgba(255, 255, 255, 0.6);
+  --color-text-link: #FFC73A;
+  --color-text-link-active: rgba(255, 199, 58, 0.7);
+  --color-bg-code: rgba(255, 255, 255, 0.04);
+  --color-border-divider: rgba(255, 255, 255, 0.1);
+  --color-text-quote: rgba(255, 255, 255, 0.6);
+  --color-border-quote: rgba(255, 255, 255, 0.4);
+  --color-border-table: rgba(255, 255, 255, 0.1);
+  --color-bg-table-header: rgba(255, 255, 255, 0.04);
+  --color-task-checked: #4DA6FF;
+  --color-task-unchecked: rgba(255, 255, 255, 0.2);
+  --color-task-checked-text: rgba(255, 255, 255, 0.3);
+  --color-highlight-bg: rgba(255, 213, 0, 0.2);
+  --color-bg: #1A1A1A;
+  --color-bg-surface: #2A2A2A;
+}

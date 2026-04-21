@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>笔记排版预览 · Mobile</title>
+<link rel="stylesheet" href="css/tokens.css?v=2.6">
+<link rel="stylesheet" href="css/markdown.css?v=2.6">
+<link rel="stylesheet" href="css/layout.css?v=2.6">
+<link rel="stylesheet" href="css/highlight-light.css" id="highlight-theme">
+<script src="js/markdown-it.min.js" defer></script>
+<script src="js/markdown-it-task-lists.min.js" defer></script>
+<script src="js/markdown-it-mark.min.js" defer></script>
+<script src="js/highlight.min.js" defer></script>
+<style>
+/* ===== Mobile 覆盖样式 ===== */
+
+/* 重置桌面布局 */
+body {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.editor-container {
+  flex-direction: column;
+  position: relative;
+}
+
+.editor-pane {
+  display: none;
+}
+
+.preview-pane {
+  flex: 1;
+  overflow: hidden;
+}
+
+.pane-header {
+  display: none;
+}
+
+.preview-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--spacing-lg) 24px;
+  padding-bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom, 0px));
+}
+
+/* ===== 顶部工具栏 ===== */
+.toolbar {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  gap: var(--spacing-xs);
+}
+
+.toolbar-left { display: none; }
+
+.toolbar-right {
+  width: 100%;
+  gap: var(--spacing-xs);
+}
+
+.sample-switcher {
+  flex: 1;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  gap: var(--spacing-xs);
+  flex-wrap: nowrap;
+}
+
+.sample-switcher::-webkit-scrollbar { display: none; }
+
+.sample-btn {
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-size: 12px;
+  padding: 4px 10px;
+}
+
+.edit-toggle {
+  font-family: var(--font-family-sans);
+  font-size: 12px;
+  padding: 4px 10px;
+  border: 1px solid var(--color-border-divider);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: var(--transition-theme);
+}
+
+.edit-toggle.active {
+  background: var(--color-text-link);
+  color: #fff;
+  border-color: var(--color-text-link);
+}
+
+.theme-toggle {
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* ===== 底部编辑面板 ===== */
+.editor-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50vh;
+  height: 50dvh;
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border-divider);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-panel.open {
+  transform: translateY(0);
+}
+
+.editor-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--color-border-divider);
+  flex-shrink: 0;
+}
+
+.editor-panel-drag {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-border-divider);
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.editor-panel-title {
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-h3);
+}
+
+.editor-panel-done {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-link);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-weight: var(--font-weight-h3);
+}
+
+.editor-panel textarea {
+  flex: 1;
+  padding: var(--spacing-md);
+  padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom, 0px));
+  font-family: var(--font-family-mono);
+  font-size: 13px;
+  line-height: var(--line-height-code);
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  border: none;
+  outline: none;
+  resize: none;
+  transition: var(--transition-theme);
+}
+
+.editor-panel textarea::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/* 编辑面板打开时，预览区缩短 */
+body.editing .preview-scroll {
+  padding-bottom: calc(50vh + var(--spacing-lg));
+  padding-bottom: calc(50dvh + var(--spacing-lg));
+}
+
+/* ===== 遮罩 ===== */
+.editor-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.2);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.editor-backdrop.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===== 紧凑屏间距（复用 layout.css 的媒体查询） ===== */
+@media (max-width: 599px) {
+  .editor-pane {
+    display: none;
+    border-right: none;
+    border-bottom: none;
+    max-height: none;
+  }
+}
+</style>
+</head>
+<body>
+<header class="toolbar">
+  <div class="toolbar-left">
+    <h1 class="toolbar-title">排版预览</h1>
+  </div>
+  <div class="toolbar-right">
+    <div class="sample-switcher">
+      <button class="sample-btn active" data-sample="mixed">混合内容</button>
+      <button class="sample-btn" data-sample="user">用户手写</button>
+      <button class="sample-btn" data-sample="ai">AI 生成</button>
+      <button class="sample-btn" data-sample="import">导入内容</button>
+    </div>
+    <button class="edit-toggle" id="editToggle">编辑</button>
+    <button class="theme-toggle" id="themeToggle" title="切换主题">
+      <span class="theme-icon">☀️</span>
+    </button>
+  </div>
+</header>
+
+<main class="editor-container">
+  <section class="preview-pane">
+    <div class="preview-scroll">
+      <article class="markdown-body" id="preview"></article>
+    </div>
+  </section>
+</main>
+
+<!-- 遮罩 -->
+<div class="editor-backdrop" id="editorBackdrop"></div>
+
+<!-- 底部编辑面板 -->
+<div class="editor-panel" id="editorPanel">
+  <div class="editor-panel-drag"></div>
+  <div class="editor-panel-header">
+    <span class="editor-panel-title">Markdown 编辑</span>
+    <button class="editor-panel-done" id="editorDone">完成</button>
+  </div>
+  <textarea id="markdownInput" spellcheck="false" placeholder="粘贴或输入 Markdown 内容..."></textarea>
+</div>
+
+<script>
+// ===== 示例内容（从 app.js 复制） =====
+const SAMPLES = {
+mixed: `# 项目周报：AI 笔记功能迭代
+
+本周完成了笔记详情页的 Markdown 渲染优化，以下是关键进展。
+
+## 一、功能进展
+
+### 1.1 排版规范落地
+
+我们基于 HyperOS 设计系统，完成了 Markdown 排版规范 v2.1 的制定。规范覆盖了以下元素：
+
+- 标题层级（H1-H3 + PageTitle）
+- 正文、**加粗**、*斜体*、~~删除线~~、==高亮==、<u>下划线</u>
+- \`行内代码\` 和代码块
+- [链接样式](https://example.com)
+
+### 1.2 多来源内容一致性
+
+| 内容来源 | 格式特点 | 处理方式 |
+|---------|---------|---------|
+| 用户手写 | 简单格式为主 | 直接渲染 |
+| AI 生成 | 格式丰富，含表格/代码 | 统一 Token 渲染 |
+| 外部导入 | 可能含 HTML | 降级 + 过滤 |
+
+### 1.3 代码块示例
+
+\`\`\`javascript
+function renderMarkdown(content) {
+  const md = markdownit({
+    html: false,
+    highlight: (str, lang) => {
+      if (lang && hljs.getLanguage(lang)) {
+        return hljs.highlight(str, { language: lang }).value;
+      }
+      return '';
+    }
+  });
+  return md.render(content);
+}
+\`\`\`
+
+## 二、待办事项
+
+- [x] 完成排版规范文档
+- [x] 构建 Demo 验证页
+- [ ] 确认语法高亮配色方案
+- [ ] 研发评审规范文档
+
+## 三、引用与备注
+
+> 设计的本质不是让东西好看，而是让东西好用。
+> 在移动端场景下，行高需要比桌面端略大，因为屏幕较窄，视线换行频率高。
+
+---
+
+下周计划：推动研发按规范实现，跟进 Dark 模式适配。
+
+![示例图片](../Image%20test.png)
+`,
+
+user: `# 读书笔记：设计心理学
+
+今天读了 Don Norman 的《设计心理学》第三章，记几个要点。
+
+## 核心概念
+
+**可供性**（Affordance）：物品的特性决定了它可能的操作方式。比如门把手的形状暗示你该推还是拉。
+
+**示能**和**意符**是两个不同的概念：
+- 示能是物品本身的属性
+- 意符是告诉用户该怎么操作的信号
+
+## 我的思考
+
+好的设计应该是不言自明的。如果一个产品需要说明书才能用，那设计就是失败的。
+
+这让我想到我们的笔记产品——用户不应该需要学习 Markdown 语法才能写出好看的笔记。排版应该是自动的、舒适的。
+
+## 金句摘录
+
+> 好的设计实际上比糟糕的设计更难被注意到，因为好的设计如此契合我们的需要，以至于它变得不可见。
+
+---
+
+明天继续读第四章。
+`,
+
+ai: `# 2026 年移动端笔记应用趋势分析
+
+## 概述
+
+移动端笔记应用正在经历从"文本编辑器"到"知识管理平台"的转型。本文分析了当前主要技术趋势及其对产品设计的影响。
+
+## 关键趋势
+
+### 1. AI 原生内容生成
+
+现代笔记应用正在将 AI 能力深度集成到编辑流程中：
+
+| 能力 | 传统方式 | AI 增强方式 | 用户价值 |
+|------|---------|-----------|---------|
+| 内容创建 | 手动输入 | 语音转文字 + AI 润色 | 效率提升 3-5x |
+| 格式整理 | 手动排版 | 自动结构化 | 零学习成本 |
+| 知识关联 | 手动标签 | 语义自动关联 | 发现隐藏联系 |
+| 内容摘要 | 手动提炼 | AI 自动摘要 | 快速回顾 |
+
+### 2. 跨平台渲染一致性
+
+确保内容在不同设备和平台上呈现一致的阅读体验，是当前的核心技术挑战。关键技术方案包括：
+
+1. **Design Token 体系**：将设计参数抽象为语义化变量
+2. **CSS Custom Properties**：实现运行时主题切换
+3. **Markdown 作为中间协议**：统一内容的存储和传输格式
+
+\`\`\`css
+/* Design Token 示例 */
+:root {
+  --font-size-body: 16px;
+  --line-height-body: 25.6px;
+  --color-text-primary: rgba(0, 0, 0, 0.9);
+}
+\`\`\`
+
+### 3. 性能优化策略
+
+对于长文档场景（>1000 行），推荐以下优化策略：
+
+- **虚拟滚动**：只渲染可视区域内的内容
+- **增量解析**：仅重新解析变更的段落
+- **图片懒加载**：进入视口时才加载图片资源
+
+> **注意**：在 WebView 环境中，JavaScript 执行性能通常比原生浏览器低 20-30%。需要特别关注首屏渲染时间。
+
+## 结论
+
+- [x] Design Token 体系是解决跨平台一致性的最佳实践
+- [x] AI 内容生成需要配套的排版规范
+- [ ] 长文档性能优化需要进一步验证
+- [ ] 离线场景的内容同步策略待定
+
+---
+
+*本分析基于 2026 年 Q1 的市场调研数据。*
+`,
+
+"import": `# Meeting Notes - Product Review
+
+## Attendees
+
+**Present:** Alice, Bob, Charlie, Diana
+**Absent:** Eve (on leave)
+
+## Agenda
+
+### 1. Q4 Roadmap Review
+
+The team reviewed the Q4 roadmap. Key highlights:
+
+- Feature A is **on track** for November release
+- Feature B has been ~~deprioritized~~ moved to Q1
+- Feature C needs additional <u>design review</u>
+
+### 2. Technical Discussion
+
+Charlie presented the new rendering engine benchmarks:
+
+\`\`\`python
+# Benchmark results
+results = {
+    "markdown_parse": "12ms avg",
+    "dom_render": "8ms avg",
+    "total_ttfp": "20ms avg"  # Time to First Paint
+}
+
+for metric, value in results.items():
+    print(f"{metric}: {value}")
+\`\`\`
+
+Performance comparison across platforms:
+
+| Platform | Parse Time | Render Time | Total |
+|:---------|:----------:|------------:|------:|
+| iOS | 10ms | 6ms | 16ms |
+| Android | 14ms | 10ms | 24ms |
+| Web | 12ms | 8ms | 20ms |
+
+### 3. Action Items
+
+- [ ] Alice: Update design specs by Friday
+- [ ] Bob: Set up A/B test framework
+- [x] Charlie: Share benchmark code
+- [ ] Diana: Schedule user interviews
+
+> **Decision:** We will proceed with the unified rendering approach.
+> All platforms will use the same CSS Token system.
+
+### 4. Next Steps
+
+1. Design review scheduled for **next Tuesday**
+2. Engineering sprint starts **November 1st**
+3. Beta release target: **November 15th**
+
+---
+
+*Notes taken by Diana. Please review and add corrections.*
+
+![Architecture Diagram](https://via.placeholder.com/600x300/e8e8e8/666?text=Architecture+Diagram)
+`
+};
+
+// ===== 初始化 =====
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('markdownInput');
+  const preview = document.getElementById('preview');
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = themeToggle.querySelector('.theme-icon');
+  const highlightLink = document.getElementById('highlight-theme');
+  const editToggle = document.getElementById('editToggle');
+  const editorPanel = document.getElementById('editorPanel');
+  const editorBackdrop = document.getElementById('editorBackdrop');
+  const editorDone = document.getElementById('editorDone');
+
+  // markdown-it 配置
+  const md = window.markdownit({
+    html: true,
+    linkify: true,
+    typographer: false,
+    highlight: function (str, lang) {
+      if (lang && window.hljs && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(str, { language: lang, ignoreIllegals: true }).value;
+        } catch (_) {}
+      }
+      return '';
+    }
+  });
+
+  if (window.markdownitTaskLists) {
+    md.use(window.markdownitTaskLists, { enabled: false, label: true });
+  }
+  if (window.markdownitMark) {
+    md.use(window.markdownitMark);
+  }
+
+  // 渲染
+  function render() {
+    preview.innerHTML = md.render(input.value);
+
+    preview.querySelectorAll('.task-list-item').forEach(li => {
+      const cb = li.querySelector('.task-list-item-checkbox');
+      if (cb && cb.checked) li.classList.add('task-checked');
+    });
+
+    preview.querySelectorAll('img').forEach(img => {
+      img.addEventListener('error', function () {
+        this.classList.add('img-error');
+        this.setAttribute('alt', this.getAttribute('alt') || '图片加载失败');
+      }, { once: true });
+    });
+
+    preview.querySelectorAll('table').forEach(table => {
+      if (!table.parentElement.classList.contains('table-wrapper')) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'table-wrapper';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+
+    // 中英文混排自动间距
+    if (!CSS.supports('text-autospace', 'ideograph-alpha ideograph-numeric')) {
+      const CJK = /[\u2E80-\u9FFF\uF900-\uFAFF]/;
+      const LATIN = /[A-Za-z0-9\u00C0-\u024F]/;
+      const walk = document.createTreeWalker(preview, NodeFilter.SHOW_TEXT, null);
+      const nodes = [];
+      while (walk.nextNode()) nodes.push(walk.currentNode);
+      nodes.forEach(node => {
+        const text = node.nodeValue;
+        if (!text || text.trim().length === 0) return;
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+          result += text[i];
+          if (i < text.length - 1) {
+            const curr = text[i], next = text[i + 1];
+            if ((CJK.test(curr) && LATIN.test(next)) || (LATIN.test(curr) && CJK.test(next))) {
+              result += '\u200A';
+            }
+          }
+        }
+        if (result !== text) node.nodeValue = result;
+      });
+    }
+  }
+
+  input.addEventListener('input', render);
+
+  // ===== 编辑面板交互 =====
+  function openEditor() {
+    editorPanel.classList.add('open');
+    editorBackdrop.classList.add('visible');
+    editToggle.classList.add('active');
+    editToggle.textContent = '完成';
+    document.body.classList.add('editing');
+  }
+
+  function closeEditor() {
+    editorPanel.classList.remove('open');
+    editorBackdrop.classList.remove('visible');
+    editToggle.classList.remove('active');
+    editToggle.textContent = '编辑';
+    document.body.classList.remove('editing');
+    input.blur();
+  }
+
+  editToggle.addEventListener('click', () => {
+    editorPanel.classList.contains('open') ? closeEditor() : openEditor();
+  });
+
+  editorDone.addEventListener('click', closeEditor);
+  editorBackdrop.addEventListener('click', closeEditor);
+
+  // 下滑关闭编辑面板
+  let touchStartY = 0;
+  editorPanel.addEventListener('touchstart', e => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  editorPanel.addEventListener('touchmove', e => {
+    const dy = e.touches[0].clientY - touchStartY;
+    if (dy > 80) closeEditor();
+  }, { passive: true });
+
+  // ===== 示例切换 =====
+  document.querySelectorAll('.sample-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.sample-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      input.value = SAMPLES[btn.dataset.sample] || '';
+      render();
+      closeEditor();
+      // 滚动到顶部
+      document.querySelector('.preview-scroll').scrollTop = 0;
+    });
+  });
+
+  // ===== 主题切换 =====
+  let isDark = false;
+  themeToggle.addEventListener('click', () => {
+    isDark = !isDark;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : '');
+    themeIcon.textContent = isDark ? '🌙' : '☀️';
+    highlightLink.href = isDark ? 'css/highlight-dark.css' : 'css/highlight-light.css';
+  });
+
+  // 加载默认示例
+  input.value = SAMPLES.mixed;
+  render();
+});
+</script>
+</body>
+</html>
