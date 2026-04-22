@@ -36,6 +36,7 @@
   --font-weight-h4: 450;
   --font-weight-body: 330;
   --font-weight-emphasis: 450;   /* Demibold */
+  --font-weight-medium: 380;     /* Medium — 标题取消加粗态 */
   --font-weight-secondary: 330;
 
   --line-height-page-title: 33.8px;

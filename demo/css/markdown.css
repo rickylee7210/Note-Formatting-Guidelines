@@ -53,6 +53,13 @@
   margin-bottom: var(--spacing-sm);
 }
 
+/* ===== 标题取消加粗（块编辑器能力）===== */
+.markdown-body h1[data-bold="false"],
+.markdown-body h2[data-bold="false"],
+.markdown-body h3[data-bold="false"] {
+  font-weight: var(--font-weight-medium);
+}
+
 /* ===== 段落 ===== */
 .markdown-body p {
   margin-top: 0;
@@ -130,7 +137,7 @@
   border-radius: 0;
   font-size: var(--font-size-code);
   line-height: var(--line-height-code);
-  color: var(--color-text-primary);
+  color: var(--color-text-code);
   display: block;
   width: fit-content;
   min-width: 100%;
@@ -197,6 +204,12 @@
   left: 0;
 }
 
+/* 有序列表编号样式循环：decimal → lower-alpha → upper-roman */
+.markdown-body ol ol > li::before { content: counter(ol-counter, lower-alpha) "."; }
+.markdown-body ol ol ol > li::before { content: counter(ol-counter, upper-roman) "."; }
+.markdown-body ol ol ol ol > li::before { content: counter(ol-counter) "."; }
+.markdown-body ol ol ol ol ol > li::before { content: counter(ol-counter, lower-alpha) "."; }
+
 .markdown-body ul {
   list-style: none;
   padding-left: 0;
@@ -208,27 +221,156 @@
   position: relative;
 }
 
+/* 第 1 级：实心圆 ● */
 .markdown-body ul > li:not(.task-list-item)::before {
   content: "";
   position: absolute;
   left: 2px;
-  top: calc((var(--line-height-body) - 6px) / 2);
+  top: calc((var(--li-line-height) - 6px) / 2);
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: currentColor;
 }
 
+/* 第 2 级：空心圆 ○（内描边） */
+.markdown-body ul ul > li:not(.task-list-item)::before {
+  background: transparent;
+  border: none;
+  box-shadow: inset 0 0 0 1px currentColor;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* 第 3 级：实心菱形 ◆ */
+.markdown-body ul ul ul > li:not(.task-list-item)::before {
+  background: currentColor;
+  border: none;
+  border-radius: 1px;
+  width: 5px;
+  height: 5px;
+  transform: rotate(45deg);
+  top: calc((var(--li-line-height) - 5px) / 2);
+}
+
+/* 第 4 级：空心菱形 ◇（内描边） */
+.markdown-body ul ul ul ul > li:not(.task-list-item)::before {
+  background: transparent;
+  border: none;
+  box-shadow: inset 0 0 0 1px currentColor;
+  border-radius: 1px;
+  width: 5px;
+  height: 5px;
+  transform: rotate(45deg);
+  top: calc((var(--li-line-height) - 5px) / 2);
+}
+
+/* 第 5 级：实心正方形 ■ */
+.markdown-body ul ul ul ul ul > li:not(.task-list-item)::before {
+  background: currentColor;
+  border: none;
+  border-radius: 1px;
+  width: 5px;
+  height: 5px;
+  transform: none;
+  top: calc((var(--li-line-height) - 6px) / 2);
+}
+
 .markdown-body li {
   margin-bottom: var(--spacing-sm);
   line-height: var(--line-height-body);
+  --li-font-size: var(--font-size-body);
+  --li-font-weight: var(--font-weight-body);
+  --li-line-height: var(--line-height-body);
+  --li-checkbox-size: 18px;
+  --li-checkbox-radius: 4px;
+  --li-checkmark-size: 12px;
 }
 
-/* 扁平化：嵌套列表不额外缩进 */
+/* 嵌套列表缩进：每级 +16dp，最大 5 级 */
 .markdown-body li > ul,
 .markdown-body li > ol {
   margin: 0;
-  padding: 0;
+  padding-left: var(--spacing-lg);
+}
+
+/* 第 6 级起停止缩进 */
+.markdown-body li li li li li > ul,
+.markdown-body li li li li li > ol {
+  padding-left: 0;
+}
+
+/* ===== 块级缩进（块编辑器能力）===== */
+/* 段落、标题、引用、列表等任意内容块的阶梯缩进 */
+.markdown-body [data-indent="1"] { padding-left: var(--spacing-lg); }
+.markdown-body [data-indent="2"] { padding-left: calc(var(--spacing-lg) * 2); }
+.markdown-body [data-indent="3"] { padding-left: calc(var(--spacing-lg) * 3); }
+.markdown-body [data-indent="4"] { padding-left: calc(var(--spacing-lg) * 4); }
+.markdown-body [data-indent="5"] { padding-left: calc(var(--spacing-lg) * 5); }
+
+/* 缩进容器内的首尾边距清理 */
+.markdown-body [data-indent] > :first-child { margin-top: 0; }
+.markdown-body [data-indent] > :last-child { margin-bottom: 0; }
+
+/* 图片、表格、分割线、代码块不参与缩进（负 margin 抵消） */
+.markdown-body [data-indent="1"] { --indent-offset: var(--spacing-lg); }
+.markdown-body [data-indent="2"] { --indent-offset: calc(var(--spacing-lg) * 2); }
+.markdown-body [data-indent="3"] { --indent-offset: calc(var(--spacing-lg) * 3); }
+.markdown-body [data-indent="4"] { --indent-offset: calc(var(--spacing-lg) * 4); }
+.markdown-body [data-indent="5"] { --indent-offset: calc(var(--spacing-lg) * 5); }
+
+.markdown-body [data-indent] > img,
+.markdown-body [data-indent] > .table-wrapper,
+.markdown-body [data-indent] > table,
+.markdown-body [data-indent] > hr,
+.markdown-body [data-indent] > pre {
+  margin-left: calc(-1 * var(--indent-offset, 0px));
+}
+
+/* ===== 列表标题样式（块编辑器能力）===== */
+.markdown-body [data-heading="h1"] li {
+  --li-font-size: var(--font-size-h1);
+  --li-font-weight: var(--font-weight-h1);
+  --li-line-height: var(--line-height-h1);
+  --li-checkbox-size: 24px;
+  --li-checkbox-radius: 5px;
+  --li-checkmark-size: 16px;
+}
+.markdown-body [data-heading="h2"] li {
+  --li-font-size: var(--font-size-h2);
+  --li-font-weight: var(--font-weight-h2);
+  --li-line-height: var(--line-height-h2);
+  --li-checkbox-size: 22px;
+  --li-checkbox-radius: 5px;
+  --li-checkmark-size: 15px;
+}
+.markdown-body [data-heading="h3"] li {
+  --li-font-size: var(--font-size-h3);
+  --li-font-weight: var(--font-weight-h3);
+  --li-line-height: var(--line-height-h3);
+  --li-checkbox-size: 20px;
+  --li-checkbox-radius: 4px;
+  --li-checkmark-size: 14px;
+}
+.markdown-body [data-heading="h4"] li,
+.markdown-body [data-heading="h5"] li,
+.markdown-body [data-heading="h6"] li {
+  --li-font-size: var(--font-size-h4);
+  --li-font-weight: var(--font-weight-h4);
+  --li-line-height: var(--line-height-h4);
+  --li-checkbox-size: 18px;
+  --li-checkbox-radius: 4px;
+  --li-checkmark-size: 12px;
+}
+.markdown-body [data-heading] li {
+  font-size: var(--li-font-size);
+  font-weight: var(--li-font-weight);
+  line-height: var(--li-line-height);
+  color: var(--color-heading);
+}
+.markdown-body [data-heading] li code {
+  color: var(--color-text-code);
 }
 
 /* ===== 任务列表 ===== */
@@ -239,19 +381,19 @@
 .markdown-body .task-list-item {
   list-style: none;
   margin-left: 0;
-  padding-left: calc(18px + var(--spacing-lg));
+  padding-left: calc(var(--li-checkbox-size) + var(--spacing-lg));
   position: relative;
 }
 
 .markdown-body .task-list-item-checkbox {
-  width: 18px;
-  height: 18px;
+  width: var(--li-checkbox-size);
+  height: var(--li-checkbox-size);
   margin-right: 0;
-  border-radius: 4px;
+  border-radius: var(--li-checkbox-radius);
   accent-color: var(--color-task-checked);
   position: absolute;
   left: 0;
-  top: calc((var(--line-height-body) - 18px) / 2);
+  top: calc((var(--li-line-height) - var(--li-checkbox-size)) / 2);
   -webkit-appearance: none;
   appearance: none;
   border: 2px solid rgba(0, 0, 0, 0.2);
@@ -266,7 +408,7 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 12px 12px;
+  background-size: var(--li-checkmark-size) var(--li-checkmark-size);
 }
 
 /* 已完成的任务文字变淡 */
@@ -312,6 +454,20 @@
   line-height: var(--line-height-body);
   white-space: nowrap;
   transition: var(--transition-theme);
+}
+
+/* ===== 对齐方式 ===== */
+.markdown-body [align="left"] {
+  text-align: left;
+}
+
+.markdown-body [align="center"],
+.markdown-body center {
+  text-align: center;
+}
+
+.markdown-body [align="right"] {
+  text-align: right;
 }
 
 /* ===== 分割线 ===== */

@@ -130,6 +130,7 @@ Markdown Mapping（AI/文档协议）
 | 区块 | 引用 | block.quote | 引用 | `>` |
 | 区块 | 有序/无序列表 | block.list | 列表 | `- ` / `1. ` |
 | 区块 | 任务列表 | block.task | 任务项 | `- [ ]` / `- [x]` |
+| 区块 | 列表标题样式 | block.list.heading | 标题级别列表 | `<div data-heading="hN">` 包裹的列表，继承对应标题的字号/字重/行高 |
 | 区块 | 分割线 | block.divider | 分割 | `---` |
 | 区块 | 表格 | block.table | 数据表格 | Markdown table 语法 |
 | 媒体 | 图片 | media.image | 图片内容 | `![alt](url)` |
@@ -149,9 +150,9 @@ Markdown Mapping（AI/文档协议）
 | 语义 | 字号 | 字重 | 行高倍数 | 行高计算值 |
 |------|------|------|----------|-----------|
 | heading.page (PageTitle) | 26dp | Semibold-520 | 1.3x | 33.8dp |
-| heading.section (H1) | 22dp | Demibold-450 | 1.35x | 29.7dp |
-| heading.subsection (H2) | 20dp | Demibold-450 | 1.4x | 28dp |
-| heading.caption (H3) | 18dp | Demibold-450 | 1.45x | 26.1dp |
+| heading.section (H1) | 22dp | Demibold-450（默认）/ Medium-380（取消加粗） | 1.35x | 29.7dp |
+| heading.subsection (H2) | 20dp | Demibold-450（默认）/ Medium-380（取消加粗） | 1.4x | 28dp |
+| heading.caption (H3) | 18dp | Demibold-450（默认）/ Medium-380（取消加粗） | 1.45x | 26.1dp |
 | heading.minor (H4-H6) | 16dp | Demibold-450 | 1.5x | 24dp |
 | text.primary (正文) | 16dp | Regular-330 | 1.6x | 25.6dp |
 | text.emphasis (加粗) | 16dp | Demibold-450 | 1.6x | 25.6dp |
@@ -219,8 +220,14 @@ Markdown Mapping（AI/文档协议）
 ```
 悬挂缩进：标记绝对定位，文字通过 padding-left 缩进，换行后文字与首行文字对齐
 无序/有序列表 padding-left = calc(1em + lg) = 32dp
-任务列表 padding-left = calc(18dp + lg) = 34dp
+任务列表 padding-left = calc(checkbox-size + lg)
+  - 默认 (body/H4-H6): calc(18dp + 16dp) = 34dp
+  - H3: calc(20dp + 16dp) = 36dp
+  - H2: calc(22dp + 16dp) = 38dp
+  - H1: calc(24dp + 16dp) = 40dp
 标记到文字间距 = lg (16dp)，三种列表统一
+圆点垂直居中 = calc((li-line-height - bullet-size) / 2)
+checkbox 垂直居中 = calc((li-line-height - checkbox-size) / 2)
 嵌套列表 = CSS 扁平化（margin: 0; padding: 0），不产生阶梯缩进
 ```
 
@@ -290,10 +297,13 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | 无序列表 (Unordered) | `- ` 或 `* ` | UnorderedList | block.list.unordered |
 | 有序列表 (Ordered) | `1. ` | OrderedList | block.list.ordered |
 | 任务列表 (Task) | `- [ ]` / `- [x]` | TaskList | block.task |
+| 列表标题样式 (Heading List) | `<div data-heading="hN">` 包裹列表 | HeadingList | block.list.heading |
+| 标题加粗切换 (Heading Bold Toggle) | `<hN data-bold="false">` | HeaderN | heading.section/.subsection/.caption |
 | 表格 (Table) | `\| ... \|` | TableView | block.table |
 | 分割线 (Divider) | `---` | HorizontalRule | block.divider |
 | 代码块 (Code Block) | ` ``` ` | CodeBlock | text.code + code.bg |
 | 向右缩进 | Tab / Space | IndentationGroup | layout.indent |
+| 向左缩进 | Shift+Tab | IndentationGroup | layout.outdent |
 | 居左对齐 | `<div align="left">` | TextAlignLeft | layout.align.left |
 | 居中对齐 | `<center>` | TextAlignCenter | layout.align.center |
 | 居右对齐 | `<div align="right">` | TextAlignRight | layout.align.right |
@@ -320,24 +330,25 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | 字体 | Monospace（系统等宽字体） |
 | 字号 | 15dp |
 | 行高 | 1.2x (16.8dp) |
+| 文字颜色 | text.code：#000000 (Alpha 60%) / Dark: #FFFFFF (Alpha 60%) |
 | 背景 | code.bg |
 | padding | lg (16dp)，上下由 `pre` 控制，左右由 `pre code` 控制（确保横向滚动时左右边距不塌陷） |
 | 圆角 | 8dp |
-| 语法高亮 | 待确认 HyperOS 官方配色，默认参考 GitHub 配色方案 |
+| 语法高亮 | 不支持彩色语法高亮，代码块内所有文本统一使用 text.code 色值 |
 
 #### List（列表）
 
 | 属性 | 值 |
 |------|-----|
-| 行高 | text.primary 同款：16dp × 1.6 = 25.6dp |
+| 行高 | 默认 text.primary 同款 25.6dp；data-heading 模式下继承对应标题行高（见 Heading List） |
 | 项间距 | sm (8dp) |
 | 悬挂缩进 | 标记绝对定位 + li 的 padding-left 腾出标记空间，换行文字与首行文字对齐 |
 | 无序列表 padding-left | calc(1em + lg) = 32dp，圆点 left: 2px 微调不贴边 |
 | 有序列表 padding-left | calc(1em + lg) = 32dp，数字 left: 0 |
 | 任务列表 padding-left | calc(18dp + lg) = 34dp，checkbox left: 0 |
 | 标记到文字间距 | lg (16dp)，三种列表统一 |
-| 圆点垂直居中 | `calc((line-height-body - 6px) / 2)` |
-| checkbox 垂直居中 | `calc((line-height-body - 18px) / 2)` |
+| 圆点垂直居中 | `calc((--li-line-height - bullet-size) / 2)` |
+| checkbox 垂直居中 | `calc((--li-line-height - --li-checkbox-size) / 2)` |
 | 嵌套列表 | CSS 扁平化（margin: 0; padding: 0），不产生阶梯缩进 |
 
 #### Table（表格）🆕
@@ -383,15 +394,56 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 
 | 属性 | 值 |
 |------|-----|
-| Checkbox 尺寸 | 18 × 18dp |
+| Checkbox 尺寸 | 默认 18 × 18dp；data-heading 模式下随级别缩放（H3: 20dp, H2: 22dp, H1: 24dp） |
 | Checkbox 描边 | 2dp 内描边，rgba(0, 0, 0, 0.2) / Dark: rgba(255, 255, 255, 0.2) |
-| Checkbox 圆角 | 4dp |
+| Checkbox 圆角 | 默认 4dp；H1/H2 为 5dp |
 | 选中态填充 | rgba(0, 0, 0, 0.2) / Dark: rgba(255, 255, 255, 0.2)，描边透明（不叠加） |
-| 选中态图标 | 白色勾选 |
+| 选中态图标 | 白色勾选，图标尺寸默认 12dp，随级别缩放（H3: 14dp, H2: 15dp, H1: 16dp） |
 | 未选中边框 | rgba(0, 0, 0, 0.2) / Dark: rgba(255, 255, 255, 0.2) |
-| 与文字对齐 | Checkbox 绝对定位 left: 0，通过 `calc((line-height-body - 18dp) / 2)` 垂直居中于首行 |
+| 与文字对齐 | Checkbox 绝对定位 left: 0，通过 `calc((--li-line-height - --li-checkbox-size) / 2)` 垂直居中于首行 |
 | 已完成文字颜色 | #000000 (Alpha 30%) / Dark: #FFFFFF (Alpha 30%) |
 | 选中文字样式 | 无删除线（保持可读性） |
+
+#### Heading Bold Toggle（标题加粗切换）
+
+**机制：** 块编辑器通过 `data-bold="false"` 属性标记取消加粗的标题。
+
+| 属性 | 值 |
+|------|-----|
+| 适用范围 | 仅 H1-H3（H4-H6 不支持，字号与正文相同，降权后区分度不足） |
+| 默认状态 | 无 `data-bold` 属性 = Demibold-450（加粗开启） |
+| 取消加粗 | `data-bold="false"` = Medium-380 |
+| 与 `<strong>` 的关系 | 取消加粗后，标题内 `**bold**` 文字恢复 450，可见加粗效果 |
+
+#### Heading List（列表标题样式）
+
+**机制：** 块编辑器通过 `<div data-heading="hN">` 包裹列表（`<ul>` / `<ol>`），内部 `<li>` 通过 CSS relay 变量继承对应标题级别的排版参数。无 `data-heading` 属性时，relay 变量取默认值（= body 级别），普通列表行为不变。
+
+**Relay 变量定义：**
+
+| 变量名 | 作用 | 默认值（body） |
+|--------|------|----------------|
+| `--li-font-size` | 列表项字号 | `var(--font-size-body)` = 16dp |
+| `--li-font-weight` | 列表项字重 | `var(--font-weight-body)` = 330 |
+| `--li-line-height` | 列表项行高 | `var(--line-height-body)` = 25.6dp |
+| `--li-checkbox-size` | Checkbox 边长 | 18px |
+| `--li-checkbox-radius` | Checkbox 圆角 | 4px |
+| `--li-checkmark-size` | 勾选图标尺寸 | 12px |
+
+**各级别参数对照表：**
+
+| 参数 | H1 | H2 | H3 | H4-H6 | body（默认） |
+|------|-----|-----|-----|--------|-------------|
+| font-size | 22dp | 20dp | 18dp | 16dp | 16dp |
+| font-weight | 450 | 450 | 450 | 450 | 330 |
+| line-height | 29.7dp | 28dp | 26.1dp | 24dp | 25.6dp |
+| checkbox-size | 24dp | 22dp | 20dp | 18dp | 18dp |
+| checkbox-radius | 5dp | 5dp | 4dp | 4dp | 4dp |
+| checkmark-size | 16dp | 15dp | 14dp | 12dp | 12dp |
+
+**叠加规则：**
+- `data-heading` 与 `data-indent` 可叠加使用，互不干扰
+- 颜色：列表项文字使用 `--color-heading`（标题色），非 `--color-text-primary`；行内代码块（`` `code` ``）不继承标题色，保持 `--color-text-code` 正文代码色值
 
 ---
 
@@ -418,6 +470,8 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 - / * → block.list.unordered
 1. → block.list.ordered
 - [ ] / - [x] → block.task
+<div data-heading="hN"> + 列表 → block.list.heading（列表项继承 hN 的字号/字重/行高）
+<hN data-bold="false"> → heading 取消加粗（Demibold-450 降为 Medium-380，仅 H1-H3）
 > → block.quote
 --- → block.divider
 | table | → block.table
@@ -466,6 +520,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 --font-weight-h3: 450;
 --font-weight-h4: 450;
 --font-weight-body: 380;        /* Medium */
+--font-weight-medium: 380;      /* Medium — 标题取消加粗态 */
 --font-weight-secondary: 330;   /* Regular */
 
 --line-height-page-title: 33.8dp;
@@ -484,6 +539,16 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 --spacing-lg: 16dp;
 --spacing-xl: 24dp;
 --spacing-xxl: 32dp;
+
+/* ===== List Relay Variables (列表项中继变量) ===== */
+/* 定义在 .markdown-body li 上，默认值 = body 级别 */
+/* [data-heading="hN"] li 覆写为对应标题级别 */
+--li-font-size: var(--font-size-body);        /* 默认 16dp */
+--li-font-weight: var(--font-weight-body);    /* 默认 330 */
+--li-line-height: var(--line-height-body);    /* 默认 25.6dp */
+--li-checkbox-size: 18px;                      /* 默认 18dp */
+--li-checkbox-radius: 4px;                     /* 默认 4dp */
+--li-checkmark-size: 12px;                     /* 默认 12dp */
 
 /* ===== Colors (Light) ===== */
 --color-heading: #000000;
@@ -538,6 +603,8 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 - [ ] 引用块（左边框 2dp、无背景、不嵌套）
 - [ ] 有序列表 / 无序列表（缩进、多层级）
 - [ ] 任务列表（checkbox 尺寸、选中态、与正文左对齐不缩进、已完成文字 Alpha 30%）
+- [ ] 列表标题样式（data-heading H1-H3 字号/字重明显区别于正文列表；bullet/number/checkbox 垂直居中；checkbox 等比缩放；与 data-indent 可叠加；无 data-heading 的普通列表不受影响）
+- [ ] 标题加粗切换（H1-H3 data-bold="false" 字重降为 380；无属性时保持 450；取消加粗后内部 **bold** 可见加粗效果；H4-H6 不受影响）
 - [ ] 分割线
 
 ### 一致性验证
@@ -565,7 +632,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 
 | # | 问题 | 影响范围 | 建议 |
 |---|------|----------|------|
-| 1 | 代码块语法高亮用什么配色方案？ | 代码块渲染 | 优先使用 HyperOS 官方配色，否则参考 GitHub 配色 |
+| ~~1~~ | ~~代码块语法高亮用什么配色方案？~~ | ~~代码块渲染~~ | 已确认：不支持彩色语法高亮，统一 text.code 单色（v2.9） |
 | 2 | 图片是否需要支持点击放大？ | 图片交互 | MVP 不做，后续迭代 |
 | 3 | 链接颜色是否跟随 HyperOS 主题色？ | 链接样式 | 当前用固定色值，后续可改为主题色变量 |
 | 4 | 数学公式和脚注是否在 MVP 范围内？ | 元素覆盖 | 建议 MVP 不含，后续迭代补充 |
@@ -585,3 +652,4 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | v2.6 | 2026-04-21 | 引用块左边距 2px 微调不贴边；Checkbox 改为 18×18dp、2dp 内描边、选中/未选中统一 rgba(0,0,0,0.2)（Dark: rgba(255,255,255,0.2)）、选中态描边透明不叠加 |
 | v2.7 | 2026-04-21 | 列表悬挂缩进（标记绝对定位 + padding-left，换行文字对齐首行）；三种列表标记到文字间距统一 lg (16dp)；嵌套列表 CSS 扁平化；圆点/checkbox 垂直居中于首行；引用竖线高度仅覆盖文字区域（不含行高），色值改用 --color-border-quote Alpha 40%；行内代码字号 14dp → 15dp；代码块 padding 改为 lg (16dp)，横向滚动左右边距不塌陷；引用块 padding-left 改为 lg (16dp) |
 | v2.8 | 2026-04-21 | 标题字号体系调整：H2 18→20dp、H3 16→18dp，形成 22→20→18→16 均匀递减阶梯；H4-H6 独立为 heading.minor token（16dp/450），不再降级复用 H3；标准映射/颜色映射/验收标准同步补充 H4-H6；Demo 混合示例新增 H4-H6 演示段落 |
+| v2.9 | 2026-04-22 | 列表标题样式：新增 data-heading 块编辑器能力，列表项可继承 H1-H6 标题排版；引入 6 个 li relay 变量（--li-font-size/font-weight/line-height/checkbox-size/checkbox-radius/checkmark-size）；checkbox 随标题级别等比缩放（18-24dp）；更新列表/任务列表组件定义、缩进公式、CSS Token 速查表、验收标准；标题加粗切换：H1-H3 支持 data-bold="false" 取消加粗（Demibold-450 → Medium-380），新增 --font-weight-medium token |
