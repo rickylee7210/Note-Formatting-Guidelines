@@ -375,7 +375,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | 最大宽度 | 100%（不超出阅读区域） |
 | 圆角 | 8dp |
 | 上下间距 | md (12dp) |
-| 图注 (caption) | text.secondary 13dp，居中对齐 |
+| 图注 (caption) | text.secondary 13dp，居左对齐 |
 | 加载失败 | 显示 alt 文字 + 占位图标 |
 
 #### Link（链接）🆕
