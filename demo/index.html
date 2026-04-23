@@ -12,6 +12,7 @@
 <script src="js/markdown-it-task-lists.min.js" defer></script>
 <script src="js/markdown-it-mark.min.js" defer></script>
 <script src="js/highlight.min.js" defer></script>
+<script src="js/samples.js" defer></script>
 <script src="js/app.js" defer></script>
 </head>
 <body>
@@ -24,7 +25,10 @@
     <div class="sample-switcher">
       <button class="sample-btn active" data-sample="mixed">混合内容</button>
       <button class="sample-btn" data-sample="user">用户手写</button>
-      <button class="sample-btn" data-sample="ai">AI 生成</button>
+      <button class="sample-btn" data-sample="meeting">会议纪要</button>
+      <button class="sample-btn" data-sample="news">新闻简报</button>
+      <button class="sample-btn" data-sample="class">课堂笔记</button>
+      <button class="sample-btn" data-sample="travel">旅行攻略</button>
       <button class="sample-btn" data-sample="import">导入内容</button>
     </div>
     <button class="theme-toggle" id="themeToggle" title="切换 Light/Dark 模式">
@@ -42,6 +46,7 @@
     <div class="pane-header">渲染预览</div>
     <div class="preview-scroll">
       <div class="page-title" id="pageTitle">笔记标题 (PageTitle)</div>
+      <div class="page-meta" id="pageMeta"></div>
       <article class="markdown-body" id="preview"></article>
     </div>
   </section>

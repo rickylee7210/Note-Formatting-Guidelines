@@ -40,13 +40,13 @@
 
 换行文字对齐首行文字（悬挂缩进），不同列表类型的文字起始位置一致，标记符号与首行文字垂直居中。对齐是视觉秩序的基础。
 
-> 支撑决策：悬挂缩进规则；三种列表（无序/有序/任务）间距统一；圆点与 checkbox 垂直居中对齐。
+> 支撑决策：悬挂缩进规则；三种列表（无序/有序/任务）间距统一；圆点与 checkbox 垂直居中对齐；标题级别列表（data-heading）中 bullet/checkbox 随字号等比缩放，仍保持垂直居中。
 
 **6. 系统承担复杂性**
 
 用户只管写内容，排版、间距、对齐、模式切换全部由系统自动处理。用户不需要知道 Token 是什么。
 
-> 支撑决策：PageTitle 由系统注入不走 Markdown；中英文间距自动插入；代码块横向滚动边距由 CSS 保证。
+> 支撑决策：PageTitle 由系统注入不走 Markdown；中英文间距自动插入；代码块横向滚动边距由 CSS 保证；块编辑器通过 `data-*` 属性（heading、bold、indent）自动管理标题级别、加粗切换、缩进层级，用户无需手写属性。
 
 **7. Light/Dark 是同一套设计**
 
@@ -115,6 +115,7 @@ Markdown Mapping（AI/文档协议）
 | 分类 | 名称 | Token | 含义 | 使用场景 |
 |------|------|-------|------|----------|
 | 系统标题 | 页面标题 (PageTitle) | heading.page | 页面标题 | 页面唯一主标题，**由系统注入，不走 Markdown 解析** |
+| 系统标题 | 页面元信息 (PageMeta) | text.secondary | 创建/修改时间 | PageTitle 下方，**由系统注入，不走 Markdown 解析** |
 | 内容标题 | 一级标题 (H1) | heading.section | 模块标题 | Markdown `#` |
 | 内容标题 | 二级标题 (H2) | heading.subsection | 子模块 | Markdown `##` |
 | 内容标题 | 三级标题 (H3) | heading.caption | 辅助标题 | Markdown `###` |
@@ -206,6 +207,8 @@ Markdown Mapping（AI/文档协议）
 | 场景 | 间距 Token | 数值 |
 |------|-----------|------|
 | 段落间距 | md | 12dp |
+| PageTitle → PageMeta | sm | 8dp |
+| PageMeta → 正文内容 | xl | 24dp |
 | 模块间距（标题前） | xl | 24dp |
 | 标题下间距 | sm ~ md | 8 ~ 12dp |
 | 列表项间距 | sm | 8dp |
@@ -279,6 +282,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | 名称 | Markdown 语法 | UI 组件 | Design Token |
 |------|-------------|---------|-------------|
 | 页面标题 (PageTitle) | 系统注入（不走 Markdown） | PageHeader | heading.page |
+| 页面元信息 (PageMeta) | 系统注入（不走 Markdown） | PageMeta | text.secondary |
 | 一级标题 (H1) | `#` | Header1 | heading.section |
 | 二级标题 (H2) | `##` | Header2 | heading.subsection |
 | 三级标题 (H3) | `###` | Header3 | heading.caption |
@@ -593,6 +597,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 ### 元素覆盖率
 
 - [ ] PageTitle（系统注入）
+- [ ] PageMeta（系统注入，text.secondary，格式：YYYY年M月D日 HH:MM，与 PageTitle 间距 sm 8dp）
 - [ ] H1 / H2 / H3 / H4-H6
 - [ ] 正文段落
 - [ ] 加粗 / 斜体 / 删除线 / 高亮

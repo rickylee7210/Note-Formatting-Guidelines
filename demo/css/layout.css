@@ -160,6 +160,15 @@ body {
   font-weight: var(--font-weight-page-title);
   line-height: var(--line-height-page-title);
   color: var(--color-heading);
+  margin-bottom: var(--spacing-sm);
+  transition: var(--transition-theme);
+}
+
+.page-meta {
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-secondary);
+  line-height: var(--line-height-secondary);
+  color: var(--color-text-secondary);
   margin-bottom: var(--spacing-xl);
   transition: var(--transition-theme);
 }

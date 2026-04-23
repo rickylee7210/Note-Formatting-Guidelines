@@ -488,10 +488,10 @@
 }
 
 .markdown-body figcaption {
-  font-size: 13px;
+  font-size: var(--font-size-secondary);
   color: var(--color-text-secondary);
-  text-align: center;
-  margin-top: 4px;
+  text-align: left;
+  margin-top: var(--spacing-xs);
 }
 
 /* 图片加载失败态 */
