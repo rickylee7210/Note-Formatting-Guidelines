@@ -288,11 +288,11 @@
   --li-checkmark-size: 12px;
 }
 
-/* 嵌套列表缩进：每级 +16dp，最大 5 级 */
+/* 嵌套列表缩进：标记与上一级文字对齐（padding-left: 0），最大 5 级 */
 .markdown-body li > ul,
 .markdown-body li > ol {
   margin: 0;
-  padding-left: var(--spacing-lg);
+  padding-left: 0;
 }
 
 /* 第 6 级起停止缩进 */
