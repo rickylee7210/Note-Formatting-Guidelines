@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>笔记排版预览 · Mobile</title>
-<link rel="stylesheet" href="css/tokens.css?v=2.6">
-<link rel="stylesheet" href="css/markdown.css?v=2.6">
-<link rel="stylesheet" href="css/layout.css?v=2.6">
-<link rel="stylesheet" href="css/highlight-light.css" id="highlight-theme">
-<script src="js/markdown-it.min.js" defer></script>
-<script src="js/markdown-it-task-lists.min.js" defer></script>
-<script src="js/markdown-it-mark.min.js" defer></script>
-<script src="js/highlight.min.js" defer></script>
+<link rel="stylesheet" href="../demo/css/tokens.css?v=3.0">
+<link rel="stylesheet" href="../demo/css/markdown.css?v=3.0">
+<link rel="stylesheet" href="../demo/css/layout.css?v=3.0">
+<link rel="stylesheet" href="../demo/css/highlight-light.css" id="highlight-theme">
+<script src="../demo/js/markdown-it.min.js" defer></script>
+<script src="../demo/js/markdown-it-task-lists.min.js" defer></script>
+<script src="../demo/js/markdown-it-mark.min.js" defer></script>
+<script src="../demo/js/highlight.min.js" defer></script>
 <style>
 /* ===== Mobile 覆盖样式 ===== */
 
@@ -261,7 +261,7 @@ body.editing .preview-scroll {
   <textarea id="markdownInput" spellcheck="false" placeholder="粘贴或输入 Markdown 内容..."></textarea>
 </div>
 
-<script src="js/samples.js"></script>
+<script src="../demo/js/samples.js"></script>
 <script>
 // ===== 初始化 =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -404,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
     isDark = !isDark;
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : '');
     themeIcon.textContent = isDark ? '🌙' : '☀️';
-    highlightLink.href = isDark ? 'css/highlight-dark.css' : 'css/highlight-light.css';
+    highlightLink.href = isDark ? '../demo/css/highlight-dark.css' : '../demo/css/highlight-light.css';
   });
 
   // 页面元信息（日期时间）
