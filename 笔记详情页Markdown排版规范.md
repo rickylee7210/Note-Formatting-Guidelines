@@ -667,3 +667,4 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | v2.8 | 2026-04-21 | 标题字号体系调整：H2 18→20dp、H3 16→18dp，形成 22→20→18→16 均匀递减阶梯；H4-H6 独立为 heading.minor token（16dp/450），不再降级复用 H3；标准映射/颜色映射/验收标准同步补充 H4-H6；Demo 混合示例新增 H4-H6 演示段落 |
 | v2.9 | 2026-04-22 | 列表标题样式：新增 data-heading 块编辑器能力，列表项可继承 H1-H6 标题排版；引入 6 个 li relay 变量（--li-font-size/font-weight/line-height/checkbox-size/checkbox-radius/checkmark-size）；checkbox 随标题级别等比缩放（18-24dp）；更新列表/任务列表组件定义、缩进公式、CSS Token 速查表、验收标准；标题加粗切换：H1-H3 支持 data-bold="false" 取消加粗（Demibold-450 → Medium-380），新增 --font-weight-medium token |
 | v3.0 | 2026-04-24 | 列表嵌套缩进重构：从扁平化改为阶梯缩进，嵌套列表 padding-left: 0，标记与上一级文字左边缘对齐；最大5级，第6级起停止缩进；表格边框色值改为固定色值（Light #E5E5E5 / Dark #262626），不使用透明度 |
+| v3.1 | 2026-04-24 | 段间距体系重构：段落/代码块/引用块/表格/图片下间距统一 lg(16dp)；标题前间距 xxl(30dp)；H1 下间距 lg(16dp)、H2-H6 下间距 md(12dp)；xl token 改为 28dp、xxl 改为 30dp；列表标记到文字间距 lg→md(12dp)；有序列表数字序号字重 Medium-380；代码字号 14dp；代码行高 normal；表格圆角 8dp（border-separate 不裁切）；代码块/图片圆角统一 8dp |
