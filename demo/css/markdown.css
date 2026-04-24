@@ -26,21 +26,21 @@
   font-size: var(--font-size-h1);
   font-weight: var(--font-weight-h1);
   line-height: var(--line-height-h1);
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
 .markdown-body h2 {
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-h2);
   line-height: var(--line-height-h2);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
 }
 
 .markdown-body h3 {
   font-size: var(--font-size-h3);
   font-weight: var(--font-weight-h3);
   line-height: var(--line-height-h3);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
 }
 
 /* H4-H6 独立样式（不再降级为 H3） */
@@ -50,7 +50,7 @@
   font-size: var(--font-size-h4);
   font-weight: var(--font-weight-h4);
   line-height: var(--line-height-h4);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
 }
 
 /* ===== 标题取消加粗（块编辑器能力）===== */
@@ -63,7 +63,7 @@
 /* ===== 段落 ===== */
 .markdown-body p {
   margin-top: 0;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
 /* ===== 强调样式 ===== */
@@ -123,7 +123,7 @@
 /* ===== 代码块 ===== */
 .markdown-body pre {
   margin-top: 0;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
   background-color: var(--color-bg-code);
   border-radius: 8px;
   padding: var(--spacing-lg) 0;
@@ -145,7 +145,7 @@
 
 /* ===== 引用块 ===== */
 .markdown-body blockquote {
-  margin: 0 0 var(--spacing-md) 2px;
+  margin: 0 0 var(--spacing-lg) 2px;
   padding: 0;
   padding-left: var(--spacing-lg);
   border-left: none;
@@ -182,7 +182,7 @@
 .markdown-body ul,
 .markdown-body ol {
   margin-top: 0;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
 .markdown-body ol {
@@ -194,7 +194,7 @@
 /* 有序列表 — 悬挂缩进 */
 .markdown-body ol > li {
   counter-increment: ol-counter;
-  padding-left: calc(1em + var(--spacing-lg));
+  padding-left: calc(1em + var(--spacing-md));
   position: relative;
 }
 
@@ -202,6 +202,7 @@
   content: counter(ol-counter) ".";
   position: absolute;
   left: 0;
+  font-weight: var(--font-weight-medium);
 }
 
 /* 有序列表编号样式循环：decimal → lower-alpha → upper-roman */
@@ -217,7 +218,7 @@
 
 /* 无序列表 — 悬挂缩进，圆点贴左边缘，文字与有序列表对齐 */
 .markdown-body ul > li:not(.task-list-item) {
-  padding-left: calc(1em + var(--spacing-lg));
+  padding-left: calc(1em + var(--spacing-md));
   position: relative;
 }
 
@@ -426,7 +427,7 @@
 /* ===== 表格 ===== */
 .markdown-body .table-wrapper {
   overflow-x: auto;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
 .markdown-body .table-wrapper table {
@@ -435,8 +436,11 @@
 
 .markdown-body table {
   width: 100%;
-  border-collapse: collapse;
-  margin-bottom: var(--spacing-md);
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: var(--spacing-lg);
+  border-radius: 8px;
+  border: 1px solid var(--color-border-table);
   transition: var(--transition-theme);
 }
 
@@ -449,11 +453,22 @@
 .markdown-body th,
 .markdown-body td {
   padding: var(--spacing-md);
-  border: 1px solid var(--color-border-table);
+  border-bottom: 1px solid var(--color-border-table);
+  border-right: 1px solid var(--color-border-table);
   font-size: var(--font-size-body);
   line-height: var(--line-height-body);
   white-space: nowrap;
   transition: var(--transition-theme);
+}
+
+/* 去掉最后一列右边框和最后一行底边框（外边框由 table 统一控制） */
+.markdown-body th:last-child,
+.markdown-body td:last-child {
+  border-right: none;
+}
+
+.markdown-body tr:last-child td {
+  border-bottom: none;
 }
 
 /* ===== 对齐方式 ===== */
@@ -484,7 +499,7 @@
   height: auto;
   border-radius: 8px;
   display: block;
-  margin: var(--spacing-md) 0;
+  margin: var(--spacing-lg) 0;
 }
 
 .markdown-body figcaption {

@@ -158,7 +158,7 @@ Markdown Mapping（AI/文档协议）
 | text.primary (正文) | 16dp | Regular-330 | 1.6x | 25.6dp |
 | text.emphasis (加粗) | 16dp | Demibold-450 | 1.6x | 25.6dp |
 | text.secondary (辅助) | 13dp | Regular-330 | 1.2x | 15.6dp |
-| text.code (代码) | 15dp | Regular-330 | 1.2x | 16.8dp |
+| text.code (代码) | 14dp | Regular-330 | normal | auto（由浏览器决定） |
 | text.link (链接) | 16dp | Medium-380 | 1.6x | 25.6dp |
 | block.table (表格正文) | 16dp | Regular-330 | 1.6x | 25.6dp |
 | block.table.header (表头) | 16dp | Regular-330 | 1.6x | 25.6dp |
@@ -196,25 +196,29 @@ Markdown Mapping（AI/文档协议）
 | Token | 数值 | 常用场景 |
 |-------|------|----------|
 | xs | 4dp | 微调间距 |
-| sm | 8dp | 列表项间距、标题下间距（小） |
-| md | 12dp | 段落间距、代码块 padding、标题下间距（大） |
-| lg | 16dp | 列表缩进、页面左右 padding |
-| xl | 24dp | 模块间距 |
+| sm | 8dp | 列表项间距 |
+| md | 12dp | 标题下间距（H2-H6）、代码块 padding、表格单元格 padding |
+| lg | 16dp | 段落间距、列表缩进、页面左右 padding |
+| xl | 28dp | 模块间距（标题前） |
 | xxl | 32dp | 大模块分隔 |
 
 ### 2. 语义间距规则
 
 | 场景 | 间距 Token | 数值 |
 |------|-----------|------|
-| 段落间距 | md | 12dp |
+| 段落间距 | lg | 16dp |
 | PageTitle → PageMeta | sm | 8dp |
-| PageMeta → 正文内容 | xl | 24dp |
-| 模块间距（标题前） | xl | 24dp |
-| 标题下间距 | sm ~ md | 8 ~ 12dp |
+| PageMeta → 正文内容 | xl | 28dp |
+| 模块间距（标题前） | xl | 28dp |
+| 标题下间距（H1） | lg | 16dp |
+| 标题下间距（H2-H6） | md | 12dp |
 | 列表项间距 | sm | 8dp |
 | 代码块 padding | lg | 16dp |
+| 代码块下间距 | lg | 16dp |
 | 表格单元格 padding | md | 12dp |
-| 图片上下间距 | md | 12dp |
+| 表格下间距 | lg | 16dp |
+| 图片上下间距 | lg | 16dp |
+| 引用块下间距 | lg | 16dp |
 | 引用块 padding-left | lg | 16dp |
 | 引用块左边距 | — | 2dp（硬编码微调） |
 
@@ -222,18 +226,18 @@ Markdown Mapping（AI/文档协议）
 
 ```
 悬挂缩进：标记绝对定位，文字通过 padding-left 缩进，换行后文字与首行文字对齐
-无序/有序列表 padding-left = calc(1em + lg) = 32dp
+无序/有序列表 padding-left = calc(1em + md) = 28dp
 任务列表 padding-left = calc(checkbox-size + lg)
   - 默认 (body/H4-H6): calc(18dp + 16dp) = 34dp
   - H3: calc(20dp + 16dp) = 36dp
   - H2: calc(22dp + 16dp) = 38dp
   - H1: calc(24dp + 16dp) = 40dp
-标记到文字间距 = lg (16dp)，三种列表统一
+标记到文字间距 = md (12dp)，三种列表统一
 圆点垂直居中 = calc((li-line-height - bullet-size) / 2)
 checkbox 垂直居中 = calc((li-line-height - checkbox-size) / 2)
 嵌套缩进（从第2级起，标记与上一级文字左边缘对齐，最大5级，第6级起停止缩进）：
   - 嵌套列表 padding-left = 0，标记自然落在上一级文字起始位置
-  - 每级实际偏移量 = li 的 padding-left（无序/有序均为 calc(1em + 16dp) ≈ 32dp）
+  - 每级实际偏移量 = li 的 padding-left（无序/有序均为 calc(1em + 12dp) ≈ 28dp）
   - 混合嵌套同理，有序套无序、无序套有序均遵循此规则
 ```
 
@@ -336,7 +340,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 |------|-----|
 | 字体 | Monospace（系统等宽字体） |
 | 字号 | 15dp |
-| 行高 | 1.2x (16.8dp) |
+| 行高 | normal（auto，由浏览器决定） |
 | 文字颜色 | text.code：#000000 (Alpha 60%) / Dark: #FFFFFF (Alpha 60%) |
 | 背景 | code.bg |
 | padding | lg (16dp)，上下由 `pre` 控制，左右由 `pre code` 控制（确保横向滚动时左右边距不塌陷） |
@@ -350,10 +354,10 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | 行高 | 默认 text.primary 同款 25.6dp；data-heading 模式下继承对应标题行高（见 Heading List） |
 | 项间距 | sm (8dp) |
 | 悬挂缩进 | 标记绝对定位 + li 的 padding-left 腾出标记空间，换行文字与首行文字对齐 |
-| 无序列表 padding-left | calc(1em + lg) = 32dp，圆点 left: 2px 微调不贴边 |
-| 有序列表 padding-left | calc(1em + lg) = 32dp，数字 left: 0 |
+| 无序列表 padding-left | calc(1em + md) = 28dp，圆点 left: 2px 微调不贴边 |
+| 有序列表 padding-left | calc(1em + md) = 28dp，数字 left: 0，数字序号字重 Medium-380 |
 | 任务列表 padding-left | calc(18dp + lg) = 34dp，checkbox left: 0 |
-| 标记到文字间距 | lg (16dp)，三种列表统一 |
+| 标记到文字间距 | md (12dp)，三种列表统一 |
 | 圆点垂直居中 | `calc((--li-line-height - bullet-size) / 2)` |
 | checkbox 垂直居中 | `calc((--li-line-height - --li-checkbox-size) / 2)` |
 | 嵌套列表 | padding-left: 0，标记与上一级文字左边缘对齐；最大5级，第6级起停止缩进 |
@@ -370,6 +374,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | 对齐 | 支持 Markdown 对齐语法（`:---` 左 / `:---:` 中 / `---:` 右） |
 | 空单元格 | 显示为空白，保持单元格高度 |
 | 窄屏处理 | 横向可滚动，不缩放 |
+| 圆角 | 8dp（border-collapse: separate + border-radius，不裁切内容） |
 
 #### Image（图片）🆕
 
@@ -519,7 +524,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 --font-size-h4: 16dp;   /* H4-H6 统一 */
 --font-size-body: 16dp;
 --font-size-secondary: 13dp;
---font-size-code: 15dp;
+--font-size-code: 14dp;
 
 --font-weight-page-title: 520;  /* Semibold */
 --font-weight-h1: 450;          /* Demibold */
@@ -537,14 +542,14 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 --line-height-h4: 24dp;
 --line-height-body: 25.6dp;
 --line-height-secondary: 15.6dp;
---line-height-code: 16.8dp;
+--line-height-code: normal;    /* auto，由浏览器根据字体决定 */
 
 /* ===== Spacing ===== */
 --spacing-xs: 4dp;
 --spacing-sm: 8dp;
 --spacing-md: 12dp;
 --spacing-lg: 16dp;
---spacing-xl: 24dp;
+--spacing-xl: 28dp;
 --spacing-xxl: 32dp;
 
 /* ===== List Relay Variables (列表项中继变量) ===== */

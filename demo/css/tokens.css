@@ -27,7 +27,7 @@
   --font-size-h4: 16px;
   --font-size-body: 16px;
   --font-size-secondary: 13px;
-  --font-size-code: 15px;
+  --font-size-code: 14px;
 
   --font-weight-page-title: 520;
   --font-weight-h1: 450;
@@ -46,14 +46,14 @@
   --line-height-h4: 24px;
   --line-height-body: 25.6px;
   --line-height-secondary: 15.6px;
-  --line-height-code: 16.8px;
+  --line-height-code: normal;
 
   /* Spacing (8dp grid) */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 12px;
   --spacing-lg: 16px;
-  --spacing-xl: 24px;
+  --spacing-xl: 28px;
   --spacing-xxl: 32px;
 
   /* Colors — Light */
