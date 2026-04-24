@@ -18,7 +18,7 @@
 .markdown-body h5,
 .markdown-body h6 {
   color: var(--color-heading);
-  margin-top: var(--spacing-xl);
+  margin-top: var(--spacing-xxl);
   transition: var(--transition-theme);
 }
 

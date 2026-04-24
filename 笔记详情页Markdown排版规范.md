@@ -209,7 +209,7 @@ Markdown Mapping（AI/文档协议）
 | 段落间距 | lg | 16dp |
 | PageTitle → PageMeta | sm | 8dp |
 | PageMeta → 正文内容 | xl | 28dp |
-| 模块间距（标题前） | xl | 28dp |
+| 模块间距（标题前） | xxl | 32dp |
 | 标题下间距（H1） | lg | 16dp |
 | 标题下间距（H2-H6） | md | 12dp |
 | 列表项间距 | sm | 8dp |
