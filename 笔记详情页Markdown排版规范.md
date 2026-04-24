@@ -200,7 +200,7 @@ Markdown Mapping（AI/文档协议）
 | md | 12dp | 标题下间距（H2-H6）、代码块 padding、表格单元格 padding |
 | lg | 16dp | 段落间距、列表缩进、页面左右 padding |
 | xl | 28dp | 模块间距（标题前） |
-| xxl | 32dp | 大模块分隔 |
+| xxl | 30dp | 大模块分隔 |
 
 ### 2. 语义间距规则
 
@@ -209,7 +209,7 @@ Markdown Mapping（AI/文档协议）
 | 段落间距 | lg | 16dp |
 | PageTitle → PageMeta | sm | 8dp |
 | PageMeta → 正文内容 | xl | 28dp |
-| 模块间距（标题前） | xxl | 32dp |
+| 模块间距（标题前） | xxl | 30dp |
 | 标题下间距（H1） | lg | 16dp |
 | 标题下间距（H2-H6） | md | 12dp |
 | 列表项间距 | sm | 8dp |
@@ -550,7 +550,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 --spacing-md: 12dp;
 --spacing-lg: 16dp;
 --spacing-xl: 28dp;
---spacing-xxl: 32dp;
+--spacing-xxl: 30dp;
 
 /* ===== List Relay Variables (列表项中继变量) ===== */
 /* 定义在 .markdown-body li 上，默认值 = body 级别 */
