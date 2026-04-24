@@ -231,10 +231,10 @@ Markdown Mapping（AI/文档协议）
 标记到文字间距 = lg (16dp)，三种列表统一
 圆点垂直居中 = calc((li-line-height - bullet-size) / 2)
 checkbox 垂直居中 = calc((li-line-height - checkbox-size) / 2)
-嵌套缩进（从第2级起，每级 = 16dp + 标记宽度，最大5级，第6级起停止缩进）：
-  - 嵌套无序列表：padding-left = 16dp + 8px（圆点6px + 左边距2px）= 24dp
-  - 嵌套有序列表：padding-left = 16dp + 1em（数字宽度）≈ 32dp
-  - 混合嵌套：取决于当前级标记类型（无序+24dp / 有序+32dp）
+嵌套缩进（从第2级起，标记与上一级文字左边缘对齐，最大5级，第6级起停止缩进）：
+  - 嵌套列表 padding-left = 0，标记自然落在上一级文字起始位置
+  - 每级实际偏移量 = li 的 padding-left（无序/有序均为 calc(1em + 16dp) ≈ 32dp）
+  - 混合嵌套同理，有序套无序、无序套有序均遵循此规则
 ```
 
 ### 4. 响应式规则
@@ -266,7 +266,7 @@ checkbox 垂直居中 = calc((li-line-height - checkbox-size) / 2)
 | 分割线 | block.divider | 低透明度边框 |
 | 引用文字 | block.quote | #000000 (Alpha 60%) / Dark: #FFFFFF (Alpha 60%) |
 | 引用左边框 | block.quote.border | #000000 (Alpha 40%) / Dark: #FFFFFF (Alpha 40%)，宽度 2dp |
-| 表格边框 | block.table.border | 低透明度边框 |
+| 表格边框 | block.table.border | #E5E5E5 / Dark: #262626（不使用透明度） |
 | 表头背景 | block.table.header.bg | 极低透明度背景 |
 | 任务列表选中 | block.task.checked | rgba(0, 0, 0, 0.2) / Dark: rgba(255, 255, 255, 0.2)，描边透明不叠加 |
 | 任务列表未选中 | block.task.unchecked | rgba(0, 0, 0, 0.2) / Dark: rgba(255, 255, 255, 0.2) |
@@ -356,7 +356,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | 标记到文字间距 | lg (16dp)，三种列表统一 |
 | 圆点垂直居中 | `calc((--li-line-height - bullet-size) / 2)` |
 | checkbox 垂直居中 | `calc((--li-line-height - --li-checkbox-size) / 2)` |
-| 嵌套列表 | 每级缩进 = 16dp + 标记宽度，最大5级，第6级起停止缩进。嵌套无序：24dp（16dp + 圆点6px + 左边距2px）；嵌套有序：16dp + 1em（≈32dp）；混合嵌套取决于当前级标记类型 |
+| 嵌套列表 | padding-left: 0，标记与上一级文字左边缘对齐；最大5级，第6级起停止缩进 |
 
 #### Table（表格）🆕
 
@@ -498,7 +498,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | 无法解析的 Markdown 语法 | 以纯文本显示，不丢失内容 |
 | 非标准扩展语法（如 `==text==`） | 不识别时显示原始文本 |
 | 内联 HTML（导入内容常见） | 仅允许格式类标签渲染，禁止脚本和交互类标签。具体白名单由研发安全团队定义 |
-| 超深层嵌套（>5 层列表/引用） | 列表：最大5级嵌套缩进（每级 16dp + 标记宽度），第6级起停止缩进；引用：视觉打平，只有「引用/不引用」两种状态 |
+| 超深层嵌套（>5 层列表/引用） | 列表：最大5级嵌套，标记与上一级文字对齐（padding-left: 0），第6级起停止缩进；引用：视觉打平，只有「引用/不引用」两种状态 |
 | H4-H6 标题（`####` 及以上） | 统一渲染为 heading.minor 样式（16dp/Demibold-450） |
 | 极长单行文本（无换行符） | 强制 `word-break: break-all`，不允许撑破容器 |
 | 中英文混排间距 | 中文与英文/数字之间自动插入 0.25em 间距（CSS `text-autospace` 或 JS polyfill） |
@@ -568,7 +568,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 --color-border-divider: rgba(0, 0, 0, 0.1);
 --color-text-quote: rgba(0, 0, 0, 0.6);
 --color-border-quote: rgba(0, 0, 0, 0.4);
---color-border-table: rgba(0, 0, 0, 0.1);
+--color-border-table: #E5E5E5;
 --color-bg-table-header: rgba(0, 0, 0, 0.04);
 --color-task-unchecked: rgba(0, 0, 0, 0.2);
 
@@ -583,7 +583,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 --color-border-divider-dark: rgba(255, 255, 255, 0.1);
 --color-text-quote-dark: rgba(255, 255, 255, 0.6);
 --color-border-quote-dark: rgba(255, 255, 255, 0.4);
---color-border-table-dark: rgba(255, 255, 255, 0.1);
+--color-border-table-dark: #262626;
 --color-bg-table-header-dark: rgba(255, 255, 255, 0.04);
 --color-task-unchecked-dark: rgba(255, 255, 255, 0.2);
 
@@ -661,4 +661,4 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | v2.7 | 2026-04-21 | 列表悬挂缩进（标记绝对定位 + padding-left，换行文字对齐首行）；三种列表标记到文字间距统一 lg (16dp)；嵌套列表 CSS 扁平化；圆点/checkbox 垂直居中于首行；引用竖线高度仅覆盖文字区域（不含行高），色值改用 --color-border-quote Alpha 40%；行内代码字号 14dp → 15dp；代码块 padding 改为 lg (16dp)，横向滚动左右边距不塌陷；引用块 padding-left 改为 lg (16dp) |
 | v2.8 | 2026-04-21 | 标题字号体系调整：H2 18→20dp、H3 16→18dp，形成 22→20→18→16 均匀递减阶梯；H4-H6 独立为 heading.minor token（16dp/450），不再降级复用 H3；标准映射/颜色映射/验收标准同步补充 H4-H6；Demo 混合示例新增 H4-H6 演示段落 |
 | v2.9 | 2026-04-22 | 列表标题样式：新增 data-heading 块编辑器能力，列表项可继承 H1-H6 标题排版；引入 6 个 li relay 变量（--li-font-size/font-weight/line-height/checkbox-size/checkbox-radius/checkmark-size）；checkbox 随标题级别等比缩放（18-24dp）；更新列表/任务列表组件定义、缩进公式、CSS Token 速查表、验收标准；标题加粗切换：H1-H3 支持 data-bold="false" 取消加粗（Demibold-450 → Medium-380），新增 --font-weight-medium token |
-| v3.0 | 2026-04-24 | 列表嵌套缩进重构：从扁平化改为阶梯缩进，每级 = 16dp + 标记宽度；嵌套无序 24dp（16dp + 圆点8px）、嵌套有序 16dp + 1em（≈32dp）；混合嵌套取决于当前级标记类型；最大5级，第6级起停止缩进 |
+| v3.0 | 2026-04-24 | 列表嵌套缩进重构：从扁平化改为阶梯缩进，嵌套列表 padding-left: 0，标记与上一级文字左边缘对齐；最大5级，第6级起停止缩进；表格边框色值改为固定色值（Light #E5E5E5 / Dark #262626），不使用透明度 |

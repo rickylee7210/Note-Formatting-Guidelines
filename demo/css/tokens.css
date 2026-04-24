@@ -67,7 +67,7 @@
   --color-border-divider: rgba(0, 0, 0, 0.1);
   --color-text-quote: rgba(0, 0, 0, 0.6);
   --color-border-quote: rgba(0, 0, 0, 0.4);
-  --color-border-table: rgba(0, 0, 0, 0.1);
+  --color-border-table: #E5E5E5;
   --color-bg-table-header: rgba(0, 0, 0, 0.04);
   --color-task-checked: #0066CC;
   --color-task-unchecked: rgba(0, 0, 0, 0.2);
@@ -92,7 +92,7 @@
   --color-border-divider: rgba(255, 255, 255, 0.1);
   --color-text-quote: rgba(255, 255, 255, 0.6);
   --color-border-quote: rgba(255, 255, 255, 0.4);
-  --color-border-table: rgba(255, 255, 255, 0.1);
+  --color-border-table: #262626;
   --color-bg-table-header: rgba(255, 255, 255, 0.04);
   --color-task-checked: #4DA6FF;
   --color-task-unchecked: rgba(255, 255, 255, 0.2);
