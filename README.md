@@ -1,93 +1,74 @@
-# Note-Formatting-Guidelines
+# 笔记详情页 Markdown 排版规范
 
+## 这是什么
 
+小米笔记详情页的 Markdown 渲染规范，基于 HyperOS 设计系统。
 
-## Getting started
+定义了从 Markdown 语法到最终视觉呈现的完整映射规则——字体、间距、颜色、组件行为、暗黑模式、异常降级，全部通过语义 Token 驱动。
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+核心目标：**让 Markdown 成为「设计 → 研发 → AI」的。** 不管用户手写、AI 生成、还是外部导入的内容，都遵循同一套渲染规则，视觉零差异。
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## 怎么用
 
-## Add your files
+### 查看 Demo
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+打开 `demo/index.html` 可预览桌面端渲染效果，`demo-mobile/index.html` 预览移动端效果。
+
+### 研发对照实现
+
+1. 阅读 `笔记详情页Markdown排版规范.md` 中的第八章「CSS Token 速查表」，这是唯一数值来源
+2. 按第六章「组件映射表」逐个实现 Markdown 元素的渲染
+3. 实现完成后按第九章「验收标准」逐项自检
+
+### 快速导航
+
+| 你想知道 | 去哪看 |
+|---------|--------|
+| 规范管什么、不管什么 | 第一章「范围边界」 |
+| 每个 Markdown 元素对应什么 UI 组件 | 第六章「组件映射表」 |
+| CSS 变量直接对照实现 | 第八章「CSS Token 速查表」 |
+| 边界情况怎么处理 | 第七章第 3 节「异常内容处理」 |
+| 实现完怎么验收 | 第九章「验收标准」 |
+
+## 深入了解
+
+### 设计原则
+
+规范基于 7 条设计原则做所有细节决策：
+
+1. **Markdown 是协议，不是格式** — 三种内容来源同一套渲染规则
+2. **Token 驱动，禁止硬编码** — 所有样式值通过语义 Token 引用
+3. **层级有度，适可而止** — 移动端层级克制，最多 5 级
+4. **内容不可丢失** — 无法识别的语法降级为纯文本，绝不吞内容
+5. **对齐即秩序** — 悬挂缩进、标记居中、文字起始位置一致
+6. **系统承担复杂性** — 用户只管写，排版全自动
+7. **Light/Dark 是同一套设计** — 暗黑模式是独立配色方案，非简单反色
+
+### 架构分层
 
 ```
-cd existing_repo
-git remote add origin https://git.n.xiaomi.com/lixiaodong/note.git
-git branch -M main
-git push -uf origin main
+Semantic Layer（语义层）
+↓
+Typography Layer（字体系统：MiSans，6 级字号阶梯）
+↓
+Layout Layer（间距系统：8dp 体系，xs/sm/md/lg/xl/xxl）
+↓
+Color Layer（颜色系统：Light/Dark 双模式，语义色值）
+↓
+Component Mapping（组件映射：23 种 UI 组件）
+↓
+Markdown Mapping（AI/文档协议）
 ```
 
-## Integrate with your tools
+### 项目结构
 
-- [ ] [Set up project integrations](https://git.n.xiaomi.com/lixiaodong/note/-/settings/integrations)
+```
+├── 笔记详情页Markdown排版规范.md   # 完整规范文档（唯一 source of truth）
+├── demo/                           # 桌面端渲染 Demo
+├── demo-mobile/                    # 移动端渲染 Demo
+└── fonts/                          # MiSans 字体文件
+```
 
-## Collaborate with your team
+### 版本
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+当前 v3.1（2026-04-24），详见规范文档末尾「版本记录」。
