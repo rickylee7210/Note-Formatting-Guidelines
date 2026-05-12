@@ -88,7 +88,7 @@
   --color-text-code: rgba(255, 255, 255, 0.6);
   --color-text-link: #FFC73A;
   --color-text-link-active: rgba(255, 199, 58, 0.7);
-  --color-bg-code: rgba(255, 255, 255, 0.04);
+  --color-bg-code: #141414;
   --color-border-divider: rgba(255, 255, 255, 0.1);
   --color-text-quote: rgba(255, 255, 255, 0.6);
   --color-border-quote: rgba(255, 255, 255, 0.4);
@@ -98,6 +98,6 @@
   --color-task-unchecked: rgba(255, 255, 255, 0.2);
   --color-task-checked-text: rgba(255, 255, 255, 0.3);
   --color-highlight-bg: rgba(255, 213, 0, 0.2);
-  --color-bg: #1A1A1A;
+  --color-bg: #000000;
   --color-bg-surface: #2A2A2A;
 }

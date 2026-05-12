@@ -24,11 +24,11 @@
 
 > 支撑决策：整体架构关键原则「❌ 不允许直接写硬编码数值」；第八章 CSS Token 速查表是唯一数值来源。
 
-**3. 扁平优于层级**
+**3. 层级有度，适可而止**
 
-移动端屏幕窄，层级越深越难读。结构上只保留必要的一层区分，多余层级视觉打平。
+移动端屏幕窄，层级需要克制但不能完全抹平。保留必要的视觉层级区分（最多 5 级），超出后停止缩进；引用等结构视觉打平。
 
-> 支撑决策：H4-H6 统一为 heading.minor 样式；引用不嵌套，多层 `>` 渲染为单层；列表 CSS 扁平化处理。
+> 支撑决策：H4-H6 统一为 heading.minor 样式；引用不嵌套，多层 `>` 渲染为单层；列表最大 5 级阶梯缩进（标记与上一级文字对齐），第 6 级起停止缩进。
 
 **4. 内容不可丢失**
 
@@ -74,12 +74,16 @@
 
 本规范定义笔记详情页中 **Markdown 内容的渲染样式**。以下内容类型**不走 Markdown 渲染管线**，由独立卡片组件处理：
 
-- 网页卡片
-- AI 录音卡片
-- 涂鸦卡片
-- AI生成的待办卡片
-- 附件卡片
-- 思维导图卡片
+- 导入的”网页卡片“
+- 导入的”附件卡片“
+- AI生成的“录音卡片”
+- AI生成的”待办卡片“
+- AI生成的”日程卡片“
+- AI生成的“思维导图卡片”
+以上卡片统一规范：
+- 最大宽度：395dp（窗口宽度 > 395dp 时固定不变，小于时等比缩小）
+- 圆角：16dp
+- 背景色：Light #F5F5F5 / Dark #141414
 
 卡片类型的检测与路由不在本规范范围内，由上游模块负责。本规范只管「确认为 Markdown 内容后，怎么渲染」。
 
@@ -173,9 +177,10 @@ Markdown Mapping（AI/文档协议）
 
 | 类型 | 倍数范围 | 说明 |
 |------|----------|------|
-| 正文 (Body) | 1.6 | 移动端长文阅读黄金比例 |
+| 正文/段落 (Body) | 1.6 | 移动端长文阅读黄金比例 |
 | 标题 (Headings) | 1.3 ~ 1.5 | 标题字号大，倍数过大会视觉松散 |
-| 代码/辅助信息 | 1.2 | 紧凑排列 |
+| 辅助信息 | 1.2 | 紧凑排列 |
+| 代码 | normal | 由浏览器根据字体自动决定 |
 
 > **行高不强制对齐 8dp 网格。** 行高是排版属性，非布局间距，由 fontSize × multiplier 精确计算。
 
@@ -266,7 +271,7 @@ checkbox 垂直居中 = calc((li-line-height - checkbox-size) / 2)
 | 行内代码 | text.code | 中等透明度 |
 | 链接 | text.link | 笔记主题色 #FFBB0F，用于一切可跳转内容 |
 | 链接点击态 | text.link.active | 主题色 + opacity 0.7 |
-| 代码块背景 | code.bg | 极低透明度背景 |
+| 代码块背景 | code.bg | Light: rgba(0, 0, 0, 0.04) / Dark: #141414 |
 | 分割线 | block.divider | 低透明度边框 |
 | 引用文字 | block.quote | #000000 (Alpha 60%) / Dark: #FFFFFF (Alpha 60%) |
 | 引用左边框 | block.quote.border | #000000 (Alpha 40%) / Dark: #FFFFFF (Alpha 40%)，宽度 2dp |
@@ -380,11 +385,23 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 
 | 属性 | 值 |
 |------|-----|
-| 最大宽度 | 100%（不超出阅读区域） |
+| 来源 | 首页可以导入图片，也可以详情页功能按钮添加，独立卡片组件 |
+| 最大宽度 | 395dp（窗口宽度 > 395dp 时固定不变，小于时等比缩小） |
 | 圆角 | 8dp |
 | 上下间距 | md (12dp) |
 | 图注 (caption) | text.secondary 13dp，居左对齐 |
 | 加载失败 | 显示 alt 文字 + 占位图标 |
+
+#### Doodle Card（涂鸦卡片）🆕
+
+| 属性 | 值 |
+|------|-----|
+| 来源 | 详情页功能按钮添加，独立卡片组件 |
+| 最大宽度 | 395dp（窗口宽度 > 395dp 时固定不变，小于时等比缩小） |
+| 圆角 | 8dp |
+| 描边 | 1dp solid block.table.border（Light: #E5E5E5 / Dark: #262626） |
+| 上下间距 | md (12dp) |
+| 描述文字 (caption) | text.secondary 13dp，居左对齐，用户可选填写 |
 
 #### Link（链接）🆕
 
@@ -584,7 +601,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 --color-text-code-dark: rgba(255, 255, 255, 0.6);
 --color-text-link-dark: #FFC73A;
 --color-text-link-active-dark: rgba(255, 199, 58, 0.7);
---color-bg-code-dark: rgba(255, 255, 255, 0.04);
+--color-bg-code-dark: #141414;
 --color-border-divider-dark: rgba(255, 255, 255, 0.1);
 --color-text-quote-dark: rgba(255, 255, 255, 0.6);
 --color-border-quote-dark: rgba(255, 255, 255, 0.4);
@@ -611,7 +628,8 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 - [ ] 加粗 / 斜体 / 删除线 / 高亮
 - [ ] 行内代码 / 代码块（含语法高亮）
 - [ ] 链接（主题色 #FFBB0F、必须带下划线、点击态）
-- [ ] 图片（max-width、圆角、图注、加载失败态）
+- [ ] 图片（max-width 395dp、圆角、图注、加载失败态）
+- [ ] 涂鸦卡片（max-width 395dp、圆角 8dp、描边 1dp、描述文字、Light/Dark 描边色值正确）
 - [ ] 表格（表头、边框、对齐、窄屏横向滚动）
 - [ ] 引用块（左边框 2dp、无背景、不嵌套）
 - [ ] 有序列表 / 无序列表（缩进、多层级）
@@ -668,3 +686,4 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | v2.9 | 2026-04-22 | 列表标题样式：新增 data-heading 块编辑器能力，列表项可继承 H1-H6 标题排版；引入 6 个 li relay 变量（--li-font-size/font-weight/line-height/checkbox-size/checkbox-radius/checkmark-size）；checkbox 随标题级别等比缩放（18-24dp）；更新列表/任务列表组件定义、缩进公式、CSS Token 速查表、验收标准；标题加粗切换：H1-H3 支持 data-bold="false" 取消加粗（Demibold-450 → Medium-380），新增 --font-weight-medium token |
 | v3.0 | 2026-04-24 | 列表嵌套缩进重构：从扁平化改为阶梯缩进，嵌套列表 padding-left: 0，标记与上一级文字左边缘对齐；最大5级，第6级起停止缩进；表格边框色值改为固定色值（Light #E5E5E5 / Dark #262626），不使用透明度 |
 | v3.1 | 2026-04-24 | 段间距体系重构：段落/代码块/引用块/表格/图片下间距统一 lg(16dp)；标题前间距 xxl(30dp)；H1 下间距 lg(16dp)、H2-H6 下间距 md(12dp)；xl token 改为 28dp、xxl 改为 30dp；列表标记到文字间距 lg→md(12dp)；有序列表数字序号字重 Medium-380；代码字号 14dp；代码行高 normal；表格圆角 8dp（border-separate 不裁切）；代码块/图片圆角统一 8dp |
+| v3.2 | 2026-05-12 | 新增涂鸦卡片（Doodle Card）组件规范：描边复用表格边框色值（1dp solid，Light #E5E5E5 / Dark #262626），支持可选描述文字；图片与涂鸦最大宽度统一为 395dp（小于时等比缩小）；独立卡片（网页/附件/录音/待办/日程/思维导图）统一规范：max-width 395dp、圆角 16dp、背景色 Light #F5F5F5 / Dark #141414；深色模式页面背景改为 #000000；深色模式代码块/行内代码背景色改为固定值 #141414（不使用透明度） |
