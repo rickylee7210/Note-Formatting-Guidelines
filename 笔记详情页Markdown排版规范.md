@@ -274,7 +274,7 @@ checkbox 垂直居中 = calc((li-line-height - checkbox-size) / 2)
 | 代码块背景 | code.bg | Light: rgba(0, 0, 0, 0.04) / Dark: #141414 |
 | 分割线 | block.divider | 低透明度边框 |
 | 引用文字 | block.quote | #000000 (Alpha 60%) / Dark: #FFFFFF (Alpha 60%) |
-| 引用左边框 | block.quote.border | #000000 (Alpha 40%) / Dark: #FFFFFF (Alpha 40%)，宽度 2dp |
+| 引用左边框 | block.quote.border | #000000 (Alpha 40%) / Dark: #FFFFFF (Alpha 40%)，宽度 2dp，圆角 1dp |
 | 表格边框 | block.table.border | #E5E5E5 / Dark: #262626（不使用透明度） |
 | 表头背景 | block.table.header.bg | 极低透明度背景 |
 | 任务列表选中 | block.task.checked | rgba(0, 0, 0, 0.2) / Dark: rgba(255, 255, 255, 0.2)，描边透明不叠加 |

@@ -163,6 +163,7 @@
   top: calc((var(--line-height-body) - var(--font-size-body)) / 2);
   bottom: calc((var(--line-height-body) - var(--font-size-body)) / 2);
   width: 2px;
+  border-radius: 1px;
   background: var(--color-border-quote);
   transition: var(--transition-theme);
 }
