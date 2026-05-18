@@ -494,13 +494,45 @@
 }
 
 /* ===== 图片 ===== */
+.markdown-body figure {
+  width: 100%;
+  margin: var(--spacing-lg) 0;
+  position: relative;
+}
+
+.markdown-body figure.is-small {
+  width: 50%;
+}
+
+.markdown-body figure .img-toggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.markdown-body figure .img-toggle svg {
+  width: 16px;
+  height: 16px;
+  stroke: #FFFFFF;
+  fill: none;
+  stroke-width: 2;
+}
+
 .markdown-body img {
-  max-width: 395px;
   width: 100%;
   height: auto;
   border-radius: 8px;
   display: block;
-  margin: var(--spacing-lg) 0;
   background-color: #F5F5F5;
 }
 
@@ -553,15 +585,44 @@
 }
 
 .markdown-body .doodle-card {
-  max-width: 395px;
+  width: 100%;
   margin: 12px 0;
+  position: relative;
 }
 
-.markdown-body .doodle-card > div:first-child {
+.markdown-body .doodle-card.is-small {
+  width: 50%;
+}
+
+.markdown-body .doodle-card .doodle-toggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.markdown-body .doodle-card .doodle-toggle svg {
+  width: 16px;
+  height: 16px;
+  stroke: #FFFFFF;
+  fill: none;
+  stroke-width: 2;
+}
+
+.markdown-body .doodle-card .doodle-content {
   border-radius: 8px;
   border: 1px solid var(--color-border-table);
   overflow: hidden;
-  background-color: #F5F5F5;
+  background-color: #FFFFFF;
 }
 
 .markdown-body .doodle-card .doodle-caption {
@@ -587,11 +648,11 @@
   stroke: rgba(255, 255, 255, 0.4);
 }
 
-[data-theme="dark"] .markdown-body .doodle-card > div:first-child {
-  background-color: #141414;
+[data-theme="dark"] .markdown-body .doodle-card .doodle-content {
+  background-color: #000000;
 }
 
-[data-theme="dark"] .markdown-body .doodle-card > div:first-child svg path,
-[data-theme="dark"] .markdown-body .doodle-card > div:first-child svg circle {
+[data-theme="dark"] .markdown-body .doodle-card .doodle-content svg path,
+[data-theme="dark"] .markdown-body .doodle-card .doodle-content svg circle {
   stroke: #FFFFFF;
 }
