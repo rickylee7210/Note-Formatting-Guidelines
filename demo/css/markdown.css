@@ -649,10 +649,6 @@
 }
 
 [data-theme="dark"] .markdown-body .doodle-card .doodle-content {
-  background-color: #000000;
+  background-color: #FFFFFF;
 }
 
-[data-theme="dark"] .markdown-body .doodle-card .doodle-content svg path,
-[data-theme="dark"] .markdown-body .doodle-card .doodle-content svg circle {
-  stroke: #FFFFFF;
-}
