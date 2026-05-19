@@ -26,9 +26,9 @@
 
 **3. 层级有度，适可而止**
 
-移动端屏幕窄，层级需要克制但不能完全抹平。保留必要的视觉层级区分（最多 5 级），超出后停止缩进；引用等结构视觉打平。
+移动端屏幕窄，层级需要克制但不能完全抹平。保留必要的视觉层级区分（最多 6 级），超出后停止缩进；引用等结构视觉打平。
 
-> 支撑决策：H4-H6 统一为 heading.minor 样式；引用不嵌套，多层 `>` 渲染为单层；列表最大 5 级阶梯缩进（标记与上一级文字对齐），第 6 级起停止缩进。
+> 支撑决策：H4-H6 统一为 heading.minor 样式；引用不嵌套，多层 `>` 渲染为单层；列表最大 6 级阶梯缩进（标记与上一级文字对齐），第 7 级起停止缩进。
 
 **4. 内容不可丢失**
 
@@ -155,10 +155,10 @@ Markdown Mapping（AI/文档协议）
 | 语义 | 字号 | 字重 | 行高倍数 | 行高计算值 |
 |------|------|------|----------|-----------|
 | heading.page (PageTitle) | 26dp | Semibold-520 | 1.3x | 33.8dp |
-| heading.section (H1) | 22dp | Demibold-450（默认）/ Medium-380（取消加粗） | 1.35x | 29.7dp |
-| heading.subsection (H2) | 20dp | Demibold-450（默认）/ Medium-380（取消加粗） | 1.4x | 28dp |
-| heading.caption (H3) | 18dp | Demibold-450（默认）/ Medium-380（取消加粗） | 1.45x | 26.1dp |
-| heading.minor (H4-H6) | 16dp | Demibold-450 | 1.5x | 24dp |
+| heading.section (H1) | 22dp | Demibold-450（默认）/ Semibold-520（加粗） | 1.35x | 29.7dp |
+| heading.subsection (H2) | 20dp | Demibold-450（默认）/ Semibold-520（加粗） | 1.4x | 28dp |
+| heading.caption (H3) | 18dp | Demibold-450（默认）/ Semibold-520（加粗） | 1.45x | 26.1dp |
+| heading.minor (H4-H6) | 16dp | Demibold-450（默认）/ Semibold-520（加粗） | 1.5x | 24dp |
 | text.primary (正文) | 16dp | Regular-330 | 1.6x | 25.6dp |
 | text.emphasis (加粗) | 16dp | Demibold-450 | 1.6x | 25.6dp |
 | text.secondary (辅助) | 13dp | Regular-330 | 1.2x | 15.6dp |
@@ -240,7 +240,7 @@ Markdown Mapping（AI/文档协议）
 标记到文字间距 = md (12dp)，三种列表统一
 圆点垂直居中 = calc((li-line-height - bullet-size) / 2)
 checkbox 垂直居中 = calc((li-line-height - checkbox-size) / 2)
-嵌套缩进（从第2级起，标记与上一级文字左边缘对齐，最大5级，第6级起停止缩进）：
+嵌套缩进（从第2级起，标记与上一级文字左边缘对齐，最大6级，第7级起停止缩进）：
   - 嵌套列表 padding-left = 0，标记自然落在上一级文字起始位置
   - 每级实际偏移量 = li 的 padding-left（无序/有序均为 calc(1em + 12dp) ≈ 28dp）
   - 混合嵌套同理，有序套无序、无序套有序均遵循此规则
@@ -314,7 +314,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | 有序列表 (Ordered) | `1. ` | OrderedList | block.list.ordered |
 | 任务列表 (Task) | `- [ ]` / `- [x]` | TaskList | block.task |
 | 列表标题样式 (Heading List) | `<div data-heading="hN">` 包裹列表 | HeadingList | block.list.heading |
-| 标题加粗切换 (Heading Bold Toggle) | `<hN data-bold="false">` | HeaderN | heading.section/.subsection/.caption |
+| 标题加粗切换 (Heading Bold Toggle) | `<hN data-bold="true">` | HeaderN | heading.section/.subsection/.caption/.minor |
 | 表格 (Table) | `\| ... \|` | TableView | block.table |
 | 分割线 (Divider) | `---` | HorizontalRule | block.divider |
 | 代码块 (Code Block) | ` ``` ` | CodeBlock | text.code + code.bg |
@@ -365,7 +365,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | 标记到文字间距 | md (12dp)，三种列表统一 |
 | 圆点垂直居中 | `calc((--li-line-height - bullet-size) / 2)` |
 | checkbox 垂直居中 | `calc((--li-line-height - --li-checkbox-size) / 2)` |
-| 嵌套列表 | padding-left: 0，标记与上一级文字左边缘对齐；最大5级，第6级起停止缩进 |
+| 嵌套列表 | padding-left: 0，标记与上一级文字左边缘对齐；最大6级，第7级起停止缩进 |
 
 #### Table（表格）🆕
 
@@ -440,14 +440,14 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 
 #### Heading Bold Toggle（标题加粗切换）
 
-**机制：** 块编辑器通过 `data-bold="false"` 属性标记取消加粗的标题。
+**机制：** 块编辑器通过 `data-bold="true"` 属性标记用户主动加粗的标题。
 
 | 属性 | 值 |
 |------|-----|
-| 适用范围 | 仅 H1-H3（H4-H6 不支持，字号与正文相同，降权后区分度不足） |
-| 默认状态 | 无 `data-bold` 属性 = Demibold-450（加粗开启） |
-| 取消加粗 | `data-bold="false"` = Medium-380 |
-| 与 `<strong>` 的关系 | 取消加粗后，标题内 `**bold**` 文字恢复 450，可见加粗效果 |
+| 适用范围 | H1-H6（全部支持） |
+| 默认状态 | 无 `data-bold` 属性 = Demibold-450 |
+| 加粗状态 | `data-bold="true"` = Semibold-520 |
+| 与 `<strong>` 的关系 | 标题未加粗时（450），内部 `**bold**` 为 450（同权重，无额外效果）；标题加粗后（520），内部 bold 跟随标题字重 |
 
 #### Heading List（列表标题样式）
 
@@ -505,7 +505,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 1. → block.list.ordered
 - [ ] / - [x] → block.task
 <div data-heading="hN"> + 列表 → block.list.heading（列表项继承 hN 的字号/字重/行高）
-<hN data-bold="false"> → heading 取消加粗（Demibold-450 降为 Medium-380，仅 H1-H3）
+<hN data-bold="true"> → heading 加粗（Demibold-450 升为 Semibold-520，H1-H6 均支持）
 > → block.quote
 --- → block.divider
 | table | → block.table
@@ -554,7 +554,8 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 --font-weight-h3: 450;
 --font-weight-h4: 450;
 --font-weight-body: 380;        /* Medium */
---font-weight-medium: 380;      /* Medium — 标题取消加粗态 */
+--font-weight-semibold: 520;    /* Semibold — 标题加粗态 */
+--font-weight-medium: 380;      /* Medium — 有序列表数字序号等 */
 --font-weight-secondary: 330;   /* Regular */
 
 --line-height-page-title: 33.8dp;
@@ -640,7 +641,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 - [ ] 有序列表 / 无序列表（缩进、多层级）
 - [ ] 任务列表（checkbox 尺寸、选中态、与正文左对齐不缩进、已完成文字 Alpha 30%）
 - [ ] 列表标题样式（data-heading H1-H3 字号/字重明显区别于正文列表；bullet/number/checkbox 垂直居中；checkbox 等比缩放；与 data-indent 可叠加；无 data-heading 的普通列表不受影响）
-- [ ] 标题加粗切换（H1-H3 data-bold="false" 字重降为 380；无属性时保持 450；取消加粗后内部 **bold** 可见加粗效果；H4-H6 不受影响）
+- [ ] 标题加粗切换（H1-H6 data-bold="true" 字重升为 520；无属性时保持 450）
 - [ ] 分割线
 
 ### 一致性验证
@@ -693,3 +694,4 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | v3.1 | 2026-04-24 | 段间距体系重构：段落/代码块/引用块/表格/图片下间距统一 lg(16dp)；标题前间距 xxl(30dp)；H1 下间距 lg(16dp)、H2-H6 下间距 md(12dp)；xl token 改为 28dp、xxl 改为 30dp；列表标记到文字间距 lg→md(12dp)；有序列表数字序号字重 Medium-380；代码字号 14dp；代码行高 normal；表格圆角 8dp（border-separate 不裁切）；代码块/图片圆角统一 8dp |
 | v3.2 | 2026-05-12 | 新增涂鸦卡片（Doodle Card）组件规范：描边复用表格边框色值（1dp solid，Light #E5E5E5 / Dark #262626），支持可选描述文字；图片与涂鸦最大宽度统一为 395dp（小于时等比缩小）；独立卡片（网页/附件/录音/待办/日程/思维导图）统一规范：max-width 395dp、圆角 16dp、背景色 Light #F5F5F5 / Dark #141414；深色模式页面背景改为 #000000；深色模式代码块/行内代码背景色改为固定值 #141414（不使用透明度） |
 | v3.3 | 2026-05-18 | 图片与涂鸦卡片尺寸调整：默认全屏撑满内容区（移除 395dp 限制），用户可通过功能 icon 切换缩小态（50% 宽度）；图片等比缩放保持原始宽高比，首页导入默认小图模式（50%）、详情页工具条添加默认全屏；涂鸦卡片背景色固定 #FFFFFF（跟随画纸背景，不跟随深浅色模式）；涂鸦卡片深色模式下线条不变色；涂鸦卡片高度根据绘画内容自适应；引用左边框增加圆角 1dp |
+| v3.4 | 2026-05-19 | 标题加粗逻辑重构：H1-H6 默认 Demibold-450，用户操作加粗后变为 Semibold-520；属性从 `data-bold="false"` 改为 `data-bold="true"`；移除 Medium-380 标题态；H4-H6 新增加粗支持；列表缩进从最大 5 级扩展到 6 级，无序列表第 6 级标记为描边矩形 □，有序列表第 6 级为大写罗马数字 |

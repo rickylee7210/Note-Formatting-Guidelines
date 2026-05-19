@@ -53,11 +53,14 @@
   margin-bottom: var(--spacing-md);
 }
 
-/* ===== 标题取消加粗（块编辑器能力）===== */
-.markdown-body h1[data-bold="false"],
-.markdown-body h2[data-bold="false"],
-.markdown-body h3[data-bold="false"] {
-  font-weight: var(--font-weight-medium);
+/* ===== 标题加粗（用户主动操作）===== */
+.markdown-body h1[data-bold="true"],
+.markdown-body h2[data-bold="true"],
+.markdown-body h3[data-bold="true"],
+.markdown-body h4[data-bold="true"],
+.markdown-body h5[data-bold="true"],
+.markdown-body h6[data-bold="true"] {
+  font-weight: var(--font-weight-semibold);
 }
 
 /* ===== 段落 ===== */
@@ -206,11 +209,12 @@
   font-weight: var(--font-weight-medium);
 }
 
-/* 有序列表编号样式循环：decimal → lower-alpha → upper-roman */
+/* 有序列表编号样式循环：decimal → lower-alpha → upper-roman → decimal → lower-alpha → upper-roman */
 .markdown-body ol ol > li::before { content: counter(ol-counter, lower-alpha) "."; }
 .markdown-body ol ol ol > li::before { content: counter(ol-counter, upper-roman) "."; }
 .markdown-body ol ol ol ol > li::before { content: counter(ol-counter) "."; }
 .markdown-body ol ol ol ol ol > li::before { content: counter(ol-counter, lower-alpha) "."; }
+.markdown-body ol ol ol ol ol ol > li::before { content: counter(ol-counter, upper-roman) "."; }
 
 .markdown-body ul {
   list-style: none;
@@ -279,6 +283,18 @@
   top: calc((var(--li-line-height) - 6px) / 2);
 }
 
+/* 第 6 级：描边矩形 □ */
+.markdown-body ul ul ul ul ul ul > li:not(.task-list-item)::before {
+  background: transparent;
+  border: none;
+  box-shadow: inset 0 0 0 1px currentColor;
+  border-radius: 1px;
+  width: 5px;
+  height: 5px;
+  transform: none;
+  top: calc((var(--li-line-height) - 6px) / 2);
+}
+
 .markdown-body li {
   margin-bottom: var(--spacing-sm);
   line-height: var(--line-height-body);
@@ -297,9 +313,9 @@
   padding-left: 0;
 }
 
-/* 第 6 级起停止缩进 */
-.markdown-body li li li li li > ul,
-.markdown-body li li li li li > ol {
+/* 第 7 级起停止缩进 */
+.markdown-body li li li li li li > ul,
+.markdown-body li li li li li li > ol {
   padding-left: 0;
 }
 
