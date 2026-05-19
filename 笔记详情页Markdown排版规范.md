@@ -371,7 +371,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 
 | 属性 | 值 |
 |------|-----|
-| 表头字重 | Demibold-450 |
+| 表头字重 | Regular-330 |
 | 表头背景 | 无（transparent） |
 | padding | md (12dp) |
 | 边框 | 1dp solid block.table.border |
