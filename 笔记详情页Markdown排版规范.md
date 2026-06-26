@@ -272,10 +272,10 @@ checkbox 垂直居中 = calc((li-line-height - checkbox-size) / 2)
 | 链接 | text.link | 笔记主题色 #FFBB0F，用于一切可跳转内容 |
 | 链接点击态 | text.link.active | 主题色 + opacity 0.7 |
 | 代码块背景 | code.bg | Light: rgba(0, 0, 0, 0.04) / Dark: #141414 |
-| 分割线 | block.divider | 低透明度边框 |
+| 分割线 | block.divider | Light: rgba(0, 0, 0, 0.1) / Dark: rgba(255, 255, 255, 0.2) |
 | 引用文字 | block.quote | #000000 (Alpha 60%) / Dark: #FFFFFF (Alpha 60%) |
 | 引用左边框 | block.quote.border | #000000 (Alpha 40%) / Dark: #FFFFFF (Alpha 40%)，宽度 2dp，圆角 1dp |
-| 表格边框 | block.table.border | #E5E5E5 / Dark: #262626（不使用透明度） |
+| 表格边框 | block.table.border | Light: rgba(0, 0, 0, 0.1) / Dark: rgba(255, 255, 255, 0.2) |
 | 表头背景 | block.table.header.bg | 极低透明度背景 |
 | 任务列表选中 | block.task.checked | rgba(0, 0, 0, 0.2) / Dark: rgba(255, 255, 255, 0.2)，描边透明不叠加 |
 | 任务列表未选中 | block.task.unchecked | rgba(0, 0, 0, 0.2) / Dark: rgba(255, 255, 255, 0.2) |
@@ -284,6 +284,15 @@ checkbox 垂直居中 = calc((li-line-height - checkbox-size) / 2)
 ### 2. 模式切换
 
 Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0.3s ease`
+
+系统深浅色模式下，分割线与表格边框使用以下色值：
+
+| 元素 | Light | Dark |
+|------|-------|------|
+| 分割线 | rgba(0, 0, 0, 0.1) | rgba(255, 255, 255, 0.2) |
+| 表格边框 | rgba(0, 0, 0, 0.1) | rgba(255, 255, 255, 0.2) |
+
+皮肤主题下，分割线和表格边框不跟随系统深浅色响应，而是跟随皮肤主题的文字颜色做对应透明度变化。
 
 ---
 
@@ -404,7 +413,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | 尺寸适应 | 卡片高度根据绘画内容自适应，保持绘画原始宽高比 |
 | 背景色 | #FFFFFF（跟随涂鸦编辑页画纸背景，不跟随深浅色模式） |
 | 圆角 | 8dp |
-| 描边 | 1dp solid block.table.border（Light: #E5E5E5 / Dark: #262626） |
+| 描边 | 1dp solid block.table.border（Light: rgba(0, 0, 0, 0.1) / Dark: rgba(255, 255, 255, 0.2)） |
 | 上下间距 | md (12dp) |
 | 描述文字 (caption) | text.secondary 13dp，居左对齐，用户可选填写 |
 
@@ -596,7 +605,7 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 --color-border-divider: rgba(0, 0, 0, 0.1);
 --color-text-quote: rgba(0, 0, 0, 0.6);
 --color-border-quote: rgba(0, 0, 0, 0.4);
---color-border-table: #E5E5E5;
+--color-border-table: rgba(0, 0, 0, 0.1);
 --color-bg-table-header: rgba(0, 0, 0, 0.04);
 --color-task-unchecked: rgba(0, 0, 0, 0.2);
 
@@ -608,10 +617,10 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 --color-text-link-dark: #FFC73A;
 --color-text-link-active-dark: rgba(255, 199, 58, 0.7);
 --color-bg-code-dark: #141414;
---color-border-divider-dark: rgba(255, 255, 255, 0.1);
+--color-border-divider-dark: rgba(255, 255, 255, 0.2);
 --color-text-quote-dark: rgba(255, 255, 255, 0.6);
 --color-border-quote-dark: rgba(255, 255, 255, 0.4);
---color-border-table-dark: #262626;
+--color-border-table-dark: rgba(255, 255, 255, 0.2);
 --color-bg-table-header-dark: rgba(255, 255, 255, 0.04);
 --color-task-unchecked-dark: rgba(255, 255, 255, 0.2);
 
@@ -695,3 +704,4 @@ Dark 模式切换过渡动画：`transition: color 0.3s ease, background-color 0
 | v3.2 | 2026-05-12 | 新增涂鸦卡片（Doodle Card）组件规范：描边复用表格边框色值（1dp solid，Light #E5E5E5 / Dark #262626），支持可选描述文字；图片与涂鸦最大宽度统一为 395dp（小于时等比缩小）；独立卡片（网页/附件/录音/待办/日程/思维导图）统一规范：max-width 395dp、圆角 16dp、背景色 Light #F5F5F5 / Dark #141414；深色模式页面背景改为 #000000；深色模式代码块/行内代码背景色改为固定值 #141414（不使用透明度） |
 | v3.3 | 2026-05-18 | 图片与涂鸦卡片尺寸调整：默认全屏撑满内容区（移除 395dp 限制），用户可通过功能 icon 切换缩小态（50% 宽度）；图片等比缩放保持原始宽高比，首页导入默认小图模式（50%）、详情页工具条添加默认全屏；涂鸦卡片背景色固定 #FFFFFF（跟随画纸背景，不跟随深浅色模式）；涂鸦卡片深色模式下线条不变色；涂鸦卡片高度根据绘画内容自适应；引用左边框增加圆角 1dp |
 | v3.4 | 2026-05-19 | 标题加粗逻辑重构：H1-H6 默认 Demibold-450，用户操作加粗后变为 Semibold-520；属性从 `data-bold="false"` 改为 `data-bold="true"`；移除 Medium-380 标题态；H4-H6 新增加粗支持；列表缩进从最大 5 级扩展到 6 级，无序列表第 6 级标记为描边矩形 □，有序列表第 6 级为大写罗马数字 |
+| v3.5 | 2026-06-26 | 系统深浅色模式下，分割线和表格边框统一为 Light rgba(0, 0, 0, 0.1) / Dark rgba(255, 255, 255, 0.2)；皮肤主题下二者跟随文字颜色变化，不跟随系统深浅色响应 |
